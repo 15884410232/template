@@ -25,9 +25,9 @@ public class TestController {
 
 
     @RequestMapping("/one")
-    public Result<Object> one(PageReq<TestReq> pageReq){
-        log.info("pageReq:{}",pageReq);
-        return ResultUtil.success(testService.getTestPage(pageReq));
+    public Result<Object> one(TestReq testReq){
+        log.info("testReq:{}",testReq);
+        return ResultUtil.success(testService.getTestPage(testReq));
     }
 
 }

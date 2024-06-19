@@ -1,9 +1,9 @@
 package com.sp.model.dto.response;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -13,11 +13,20 @@ import java.util.List;
 @Data
 public class PageVo<T> implements Serializable {
 
-    private int page=1;
+    private long page=1;
 
-    private int row=20;
+    private long row=20L;
 
-    private BigInteger total=BigInteger.ZERO;
+    private long total=0L;
 
     private List<T> Data;
+
+
+    public void init(Page<T> page,List<T> data){
+        Data=data;
+
+        total=page.getTotal();
+
+        row=page.getSize();
+    }
 }

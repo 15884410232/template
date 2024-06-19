@@ -51,6 +51,13 @@
             <version>3.5.1</version>
         </dependency>
 
+        <!-- mysql连接器 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.20</version>
+        </dependency>
+
 
     </dependencies>
 
