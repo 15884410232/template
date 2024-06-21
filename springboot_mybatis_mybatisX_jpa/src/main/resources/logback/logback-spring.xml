@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <!--dev环境日志输出级别 -->
+    <springProfile name="dev">
+        <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+        <property name="log.path" value="./logs/dev"/>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="org.springframework.web" level="TRACE"/>
+        <logger name="com.sp" level="INFO"/>
+        <logger name="java.sql" level="INFO"/>
+        <logger name="org.hibernate" level="INFO"/>
+        <!--hibernate 参数打印-->
+        <logger name="org.hibernate.type" level="INFO"/>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace"/>
+
+
+    </springProfile>
+
+    <!-- pro环境日志输出级别 -->
+    <springProfile name="pro">
+        <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.sp" level="INFO"/>
+        <logger name="java.sql" level="INFO"/>
+        <logger name="org.hibernate" level="INFO"/>
+        <!--hibernate 参数打印-->
+        <logger name="org.hibernate.type" level="INFO"/>
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace"/>
+    </springProfile>
+
+    <!-- test环境日志输出级别 -->
+    <springProfile name="test">
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.sp" level="DEBUG"/>
+        <logger name="java.sql" level="DEBUG"/>
+    </springProfile>
+
+
+    <include resource="logback/logback_appender.xml"></include>
+    <!--项目全局日志级别-->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+
+</configuration>

@@ -1,0 +1,17 @@
+server:
+  port: 8089
+#调试模式  主要是打印spring框架相关的启动日志
+debug: false
+#跟踪模式
+trace: false
+#日志配置
+logging:
+  #日志配置文件路径,如果指定了配置文件路径，则此配置下的其他spring日志配置就不会生效了，因为已经指定了配置文件，则spring的默认配置就不生效了
+  config: classpath:logback/logback-spring.xml
+#spring配置
+spring:
+  http:
+    encoding:
+      #启动字符过滤器
+      enabled: true
+      charset: UTF-8

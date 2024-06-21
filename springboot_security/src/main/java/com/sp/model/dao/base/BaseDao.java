@@ -1,6 +1,7 @@
 package com.sp.model.dao.base;
 
-import com.sp.model.dto.req.base.PageReq;
+import com.sp.common.exception.CommonException;
+import com.sp.common.util.ObjectHelper;
 import com.sp.model.dto.response.PageVo;
 import com.sp.model.entity.base.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,10 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.transform.Transformers;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +37,12 @@ public class BaseDao<T extends BaseEntity> {
      * 构造函数-获取entityClass
      */
     public BaseDao(){
-        ParameterizedType genericSuperclass = (ParameterizedType)this.getClass().getGenericSuperclass();
-        entityClass=(Class<T>)genericSuperclass.getActualTypeArguments()[0];
+        Type genericSuperclass = this.getClass().getGenericSuperclass();
+        if(genericSuperclass instanceof ParameterizedType){
+            ParameterizedType parameterizedType = (ParameterizedType) genericSuperclass;
+            entityClass=(Class<T>)parameterizedType.getActualTypeArguments()[0];
+        }
+
     }
 
     /**
@@ -50,11 +55,12 @@ public class BaseDao<T extends BaseEntity> {
             session=sessionFactory.getCurrentSession();
         }catch (Exception ex){
             ex.printStackTrace();
+            throw  new CommonException("获取session失败");
         }
-        if(session==null){
-            session = sessionFactory.openSession();
-            log.warn("sessionFactory current session is null, open new.....");
-        }
+//        if(session==null){
+//            session = sessionFactory.openSession();
+//            log.warn("sessionFactory current session is null, open new.....");
+//        }
         return session;
 
     }
@@ -129,15 +135,15 @@ public class BaseDao<T extends BaseEntity> {
     }
 
     /**
-     * 反野查询数据
+     * 分页查询数据
      * @param sql
      * @param clazz
      * @param params
+     * @param pageVo
      * @param <T>
      * @return
      */
-    public <T> PageVo<T> findPageBySql(String sql, Class<T> clazz, Map<String,Object> params, PageVo pageVo){
-
+    protected  <T> PageVo<T> queryForPage(String sql,Map<String,Object> params, Class<T> clazz,  PageVo pageVo){
         NativeQuery nativeQuery = getSession().createNativeQuery(sql);
         nativeQuery.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.aliasToBean(clazz));
         nativeQuery.setProperties(params);
@@ -153,63 +159,42 @@ public class BaseDao<T extends BaseEntity> {
     }
 
     /**
-     * 反野查询数据
-     * @param sql
-     * @param clazz
-     * @param params
-     * @param <T>
-     * @return
-     */
-    public <T> PageVo<T> findPageBySql(String sql, Class<T> clazz, Map<String,Object> params, PageReq pageReq){
-
-        NativeQuery nativeQuery = getSession().createNativeQuery(sql);
-        nativeQuery.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.aliasToBean(clazz));
-        nativeQuery.setProperties(params);
-        nativeQuery.setMaxResults(pageReq.getRow());
-        nativeQuery.setFirstResult((pageReq.getPage()-1)* pageReq.getRow());
-
-        PageVo<T> pageVo=new PageVo<>();
-        BeanUtils.copyProperties(pageReq,pageVo);
-
-        pageVo.setData(nativeQuery.list());
-
-        String countSql="select count(t.id) from ("+sql+") t ";
-        NativeQuery countQuery = getSession().createNativeQuery(countSql);
-        countQuery.setProperties(params);
-        pageVo.setTotal((BigInteger) countQuery.list().get(0));
-        return pageVo;
-    }
-
-
-    /**
      * 查询数据List
      * @param sql
-     * @param t
      * @param params
-     * @param <T>
-     * @return
-     */
-    public <T> List<T> findListBySql(String sql, T t, Map<String,Object> params){
-        NativeQuery nativeQuery = getSession().createNativeQuery(sql);
-        nativeQuery.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.aliasToBean(t.getClass()));
-        nativeQuery.setProperties(params);
-        return nativeQuery.list();
-    }
-
-    /**
-     * 查询数据List
-     * @param sql
      * @param clazz
-     * @param params
      * @param <T>
      * @return
      */
-    public <T> List<T> findListBySqlClass(String sql, Class<T> clazz, Map<String,Object> params){
+    public <T> List<T> queryForList(String sql, Map<String,Object> params, Class<T> clazz){
         NativeQuery nativeQuery = getSession().createNativeQuery(sql);
         nativeQuery.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.aliasToBean(clazz));
         nativeQuery.setProperties(params);
         return nativeQuery.list();
     }
+
+    public <T> T queryForObject(String sql, Map<String,Object> params, Class<T> clazz){
+        NativeQuery nativeQuery = getSession().createNativeQuery(sql);
+        nativeQuery.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.aliasToBean(clazz));
+        nativeQuery.setProperties(params);
+        List list = nativeQuery.list();
+        if(list.size()>0){
+            return (T)list.get(0);
+        }
+        return null;
+    }
+
+    public BigInteger queryForBigInteger(String sql, Map<String,Object> params){
+        NativeQuery nativeQuery = getSession().createNativeQuery(sql);
+        nativeQuery.unwrap(NativeQueryImpl.class);
+        nativeQuery.setProperties(params);
+        List<BigInteger> list = nativeQuery.list();
+        if(list.size()>0){
+            return list.get(0);
+        }
+        return null;
+    }
+
 
     /**
      * hql查询数据List
@@ -226,4 +211,52 @@ public class BaseDao<T extends BaseEntity> {
         query.setProperties(params);
         return  query.list();
     }
+
+
+    /**
+     * insert or update or delete sql
+     * @param sql
+     * @param params
+     */
+    protected void executeSql(String sql, Map<String,Object> params){
+        Query query = getSession().createNativeQuery(sql);
+        query.setProperties(params);
+        query.executeUpdate();
+    }
+
+    /**
+     * 添加或修改实体
+     *
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public T saveOrUpdateEntity(T obj) {
+        obj.setIsDeleted(0);
+        if (ObjectHelper.isEmpty(obj.getId())) {
+            obj.setCreateTime(new Date());
+            obj.setUpdateTime(new Date());
+            getSession().save(obj);
+        } else {
+            obj.setUpdateTime(new Date());
+            getSession().update(obj);
+        }
+        getSession().flush();
+        return obj;
+    }
+
+    protected Long countAll(String hql, Map<String, Object> condition) {
+        if (hql == null) {
+            return 0L;
+        }
+        String tmpHql = hql.toLowerCase();
+        hql="select count(*) "+hql.substring(tmpHql.indexOf("from"));
+        log.debug("count(*) hql ---->" + hql);
+        org.hibernate.Query q = this.getSession().createQuery(hql);
+        if (condition != null&&condition.size()>0) {
+            q.setProperties(condition);
+        }
+        return (Long) q.uniqueResult();
+    }
+
 }
