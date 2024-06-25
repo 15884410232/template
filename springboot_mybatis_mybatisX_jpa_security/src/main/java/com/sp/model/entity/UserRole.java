@@ -10,40 +10,20 @@ import lombok.Data;
 
 /**
  * 
- * @TableName user
+ * @TableName user_role
  */
-@TableName(value ="user")
+@TableName(value ="user_role")
 @Data
-public class User extends BaseEntity implements Serializable {
+public class UserRole extends BaseEntity implements Serializable {
     /**
-     * 邮箱
+     * 角色id
      */
-    private String email;
+    private Long roleId;
 
     /**
-     * 电话
+     * 用户id
      */
-    private String mobile;
-
-    /**
-     * 昵称
-     */
-    private String nickname;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 状态
-     */
-    private String status;
-
-    /**
-     * 用户名
-     */
-    private String username;
+    private Long userId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -59,7 +39,7 @@ public class User extends BaseEntity implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        User other = (User) that;
+        UserRole other = (UserRole) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -68,12 +48,8 @@ public class User extends BaseEntity implements Serializable {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals(other.getVersion()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getMobile() == null ? other.getMobile() == null : this.getMobile().equals(other.getMobile()))
-            && (this.getNickname() == null ? other.getNickname() == null : this.getNickname().equals(other.getNickname()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()));
+            && (this.getRoleId() == null ? other.getRoleId() == null : this.getRoleId().equals(other.getRoleId()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
     }
 
     @Override
@@ -88,12 +64,8 @@ public class User extends BaseEntity implements Serializable {
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getVersion() == null) ? 0 : getVersion().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getMobile() == null) ? 0 : getMobile().hashCode());
-        result = prime * result + ((getNickname() == null) ? 0 : getNickname().hashCode());
-        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
+        result = prime * result + ((getRoleId() == null) ? 0 : getRoleId().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         return result;
     }
 
@@ -103,12 +75,8 @@ public class User extends BaseEntity implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", email=").append(email);
-        sb.append(", mobile=").append(mobile);
-        sb.append(", nickname=").append(nickname);
-        sb.append(", password=").append(password);
-        sb.append(", status=").append(status);
-        sb.append(", username=").append(username);
+        sb.append(", roleId=").append(roleId);
+        sb.append(", userId=").append(userId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

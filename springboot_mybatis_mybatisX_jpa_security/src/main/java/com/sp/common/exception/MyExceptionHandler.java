@@ -1,7 +1,7 @@
 package com.sp.common.exception;
 
 import com.sp.common.util.ResultUtil;
-import com.sp.model.dto.response.Result;
+import com.sp.model.dto.response.base.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

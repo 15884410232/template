@@ -10,40 +10,45 @@ import lombok.Data;
 
 /**
  * 
- * @TableName user
+ * @TableName permission
  */
-@TableName(value ="user")
+@TableName(value ="permission")
 @Data
-public class User extends BaseEntity implements Serializable {
+public class Permission extends BaseEntity implements Serializable {
     /**
-     * 邮箱
+     * 角色代码
      */
-    private String email;
+    private String code;
 
     /**
-     * 电话
+     * 排序
      */
-    private String mobile;
+    private Integer listSort;
 
     /**
-     * 昵称
+     * 角色名称
      */
-    private String nickname;
+    private String name;
 
     /**
-     * 密码
+     * 父级id
      */
-    private String password;
+    private String parentId;
 
     /**
-     * 状态
+     * 所属系统(用于区分前后台)
      */
-    private String status;
+    private String sourcePlat;
 
     /**
-     * 用户名
+     * 权限类型
      */
-    private String username;
+    private String type;
+
+    /**
+     * 资源路径
+     */
+    private String url;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -59,7 +64,7 @@ public class User extends BaseEntity implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        User other = (User) that;
+        Permission other = (Permission) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getCreateBy() == null ? other.getCreateBy() == null : this.getCreateBy().equals(other.getCreateBy()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
@@ -68,12 +73,13 @@ public class User extends BaseEntity implements Serializable {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals(other.getVersion()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
-            && (this.getMobile() == null ? other.getMobile() == null : this.getMobile().equals(other.getMobile()))
-            && (this.getNickname() == null ? other.getNickname() == null : this.getNickname().equals(other.getNickname()))
-            && (this.getPassword() == null ? other.getPassword() == null : this.getPassword().equals(other.getPassword()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-            && (this.getUsername() == null ? other.getUsername() == null : this.getUsername().equals(other.getUsername()));
+            && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
+            && (this.getListSort() == null ? other.getListSort() == null : this.getListSort().equals(other.getListSort()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getParentId() == null ? other.getParentId() == null : this.getParentId().equals(other.getParentId()))
+            && (this.getSourcePlat() == null ? other.getSourcePlat() == null : this.getSourcePlat().equals(other.getSourcePlat()))
+            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
+            && (this.getUrl() == null ? other.getUrl() == null : this.getUrl().equals(other.getUrl()));
     }
 
     @Override
@@ -88,12 +94,13 @@ public class User extends BaseEntity implements Serializable {
         result = prime * result + ((getUpdateBy() == null) ? 0 : getUpdateBy().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getVersion() == null) ? 0 : getVersion().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
-        result = prime * result + ((getMobile() == null) ? 0 : getMobile().hashCode());
-        result = prime * result + ((getNickname() == null) ? 0 : getNickname().hashCode());
-        result = prime * result + ((getPassword() == null) ? 0 : getPassword().hashCode());
-        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getUsername() == null) ? 0 : getUsername().hashCode());
+        result = prime * result + ((getCode() == null) ? 0 : getCode().hashCode());
+        result = prime * result + ((getListSort() == null) ? 0 : getListSort().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
+        result = prime * result + ((getSourcePlat() == null) ? 0 : getSourcePlat().hashCode());
+        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
+        result = prime * result + ((getUrl() == null) ? 0 : getUrl().hashCode());
         return result;
     }
 
@@ -103,12 +110,13 @@ public class User extends BaseEntity implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", email=").append(email);
-        sb.append(", mobile=").append(mobile);
-        sb.append(", nickname=").append(nickname);
-        sb.append(", password=").append(password);
-        sb.append(", status=").append(status);
-        sb.append(", username=").append(username);
+        sb.append(", code=").append(code);
+        sb.append(", listSort=").append(listSort);
+        sb.append(", name=").append(name);
+        sb.append(", parentId=").append(parentId);
+        sb.append(", sourcePlat=").append(sourcePlat);
+        sb.append(", type=").append(type);
+        sb.append(", url=").append(url);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

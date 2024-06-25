@@ -2,25 +2,32 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sp.mapper.TestMapper">
+<mapper namespace="com.sp.mapper.RoleMapper">
 
-    <resultMap id="BaseResultMap" type="com.sp.model.entity.Test">
-            <id property="id" column="id" jdbcType="VARCHAR"/>
-            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+    <resultMap id="BaseResultMap" type="com.sp.model.entity.Role">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="createBy" column="create_by" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="deletedTime" column="deleted_time" jdbcType="TIMESTAMP"/>
             <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
-            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateBy" column="update_by" jdbcType="BIGINT"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="version" column="version" jdbcType="INTEGER"/>
-            <result property="password" column="password" jdbcType="VARCHAR"/>
-            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,create_by,create_time,
         deleted_time,is_deleted,update_by,
-        update_time,version,password,
-        username
+        update_time,version,code,
+        name
     </sql>
+    <select id="findOneByCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where
+        code = #{code,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.sp.model.dto.response;
+package com.sp.model.dto.response.base;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.Data;

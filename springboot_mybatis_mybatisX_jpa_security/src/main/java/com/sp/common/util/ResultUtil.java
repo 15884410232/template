@@ -1,7 +1,7 @@
 package com.sp.common.util;
 
 import com.sp.common.enums.ResultCode;
-import com.sp.model.dto.response.Result;
+import com.sp.model.dto.response.base.Result;
 
 /**
  * 返回值工具类

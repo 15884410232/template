@@ -1,4 +1,4 @@
-package com.sp.model.dto.response;
+package com.sp.model.dto.response.base;
 
 import com.sp.common.enums.ResultCode;
 import lombok.Data;
