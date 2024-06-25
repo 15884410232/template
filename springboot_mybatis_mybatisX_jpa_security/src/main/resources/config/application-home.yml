@@ -1,0 +1,113 @@
+server:
+  port: 8089
+#调试模式  主要是打印spring框架相关的启动日志
+debug: false
+#跟踪模式
+trace: false
+#日志配置
+logging:
+  #日志配置文件路径,如果指定了配置文件路径，则此配置下的其他spring日志配置就不会生效了，因为已经指定了配置文件，则spring的默认配置就不生效了
+  config: classpath:logback/logback-spring.xml
+#文件上传路径
+myparam:
+  uploadUrl: C:\Users\13967\Desktop\upload
+  #系统默认初始化的管理员账号信息
+  admin:
+    username: admin
+    password: admin001
+    phone: 15884410232
+    email: test@qq.com
+    nickname: 管理员
+#spring配置
+spring:
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 0
+    jedis:
+      pool:
+        max-active: 8 # 最大连接数
+        max-wait: 1ms # 最大阻塞时间
+        max-idle: 4
+        min-idle: 0
+  http:
+    encoding:
+      #启动字符过滤器
+      enabled: true
+      charset: UTF-8
+  # 配置数据源信息
+  datasource:
+    # 配置数据源类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置连接数据库信息
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 我的数据库是8.0.27 5版本的可以使用 jdbc:mysql://localhost:3306/mybatis_plus?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/springboot_mybatis_jpa_security?characterEncoding=UTF-8&serverTimezone=GMT%2b8
+    username: root
+    password: 123456
+#    password: 123456
+  #jpa用于根据实体类自动生成表
+  jpa:
+    #指定数据库类型
+    database: MYSQL
+    #是否打印sql
+    show-sql: true
+    #格式化sql
+    format-sql: true
+    #hibernate配置
+    hibernate:
+      packagesToScan: com.sp
+      #是否根据实体变化自动更新数据库
+#     create：每次 SessionFactory 创建时，都会删除并重新创建数据库表结构。这通常用于开发和测试环境，因为所有的数据都会丢失。
+#     create-drop：在 SessionFactory 创建时创建表结构，在 SessionFactory 关闭时删除表结构。这也是开发和测试环境的一个好选择，因为它确保在测试结束后清理了数据库。
+#     update：如果数据库中没有表结构，Hibernate 会创建它们；如果表结构已经存在但和映射文件不匹配，Hibernate 会更新表结构。这通常用于生产环境，因为它允许你在不丢失数据的情况下进行模式迁移。但是，请注意，自动更新模式并不总是安全的，因为它可能无法处理所有的模式变化。
+#     validate：验证数据库模式是否与映射文件匹配。如果不匹配，会抛出一个异常。这通常用于生产环境，以确保数据库模式与应用程序的期望相匹配。
+#     none ----什么都不做
+      ddl-auto: update
+      #命名规则
+#      naming:
+        #命名规则
+#        physical-strategy:
+      #默认命名风格是下划线，此处配置可以改为驼峰风格
+#          org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      hibernate:
+        #数据库方言
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        #session交由spring管理
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+# 加入日志功能
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 设置MyBatis-Plus的全局配置
+  global-config:
+    db-config:
+      # 设置实体类所对应的表的统一前缀
+      #table-prefix: t_
+      # 设置统一的主键生成策略 雪花算法
+      id-type: assign_id
+  mapper-locations: classpath:mapper/*.xml
+redis:
+  host: localhost
+  port: 6379
+  database: 0
+  #连接超时时间
+  timeout: 10
+  password:
+  #最大连接数
+  poolMaxTotal: 10
+  #最大空闲连接数
+  poolMaxIdle: 5
+  #最大等待连接时间 S
+  poolMaxWait: 3
+jwt:
+  base64-secret: kuju1qM4rppw5sjgMx5WH
+  #多久不操作登录失效
+  max-idle-second: 36000
+  #登录成功之后最大有效期间 单位 S
+  max-live-second: 1864000
+
+fastjson:
+  parser:
+    autoTypeAccept: com.sp.
