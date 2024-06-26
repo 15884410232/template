@@ -13,4 +13,9 @@ public class TimeUtil {
         calendar.add(Calendar.SECOND, second);
         return calendar.getTime();
     }
+
+
+    public static long getUnixTime() {
+        return System.currentTimeMillis() / 1000L;
+    }
 }

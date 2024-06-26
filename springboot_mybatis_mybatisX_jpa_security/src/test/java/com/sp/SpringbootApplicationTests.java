@@ -24,10 +24,15 @@ class SpringbootApplicationTests {
         //test
     }
 
-    @org.junit.Test
+    @Test
     public void createPassword(){
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
         System.out.println(passwordEncoder.encode("123456"));
+    }
+
+    @Test
+    public void getUnixTime() {
+        System.out.println(System.currentTimeMillis() / 1000L);
     }
 
 }

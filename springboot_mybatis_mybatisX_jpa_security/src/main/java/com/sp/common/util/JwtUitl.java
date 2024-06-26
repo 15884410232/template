@@ -18,7 +18,8 @@ public class JwtUitl {
     private JwtConfig jwtConfig;
 
     public String generateToken(String username, String UserId) {
-        Date date = TimeUtil.nexetSecond(new Date(), jwtConfig.getMaxLiveSecond());
+//        Date date = TimeUtil.nexetSecond(new Date(), jwtConfig.getMaxLiveSecond());
+        Date date = TimeUtil.nexetSecond(new Date(), 10);
         JwtBuilder jwtBuilder= Jwts.builder();
         jwtBuilder.setSubject(username);
         jwtBuilder.setId(UserId);

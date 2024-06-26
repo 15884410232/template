@@ -34,7 +34,7 @@ public class TestController {
      * getUserList
      * @return
      */
-    @PreAuthorize("hasAuthority('getUserList')")
+//    @PreAuthorize("hasAuthority('getUserList')")
     @RequestMapping("/getUserList")
     public Result<Object> getUserList(HttpServletResponse response){
         List<User> list = userService.list();

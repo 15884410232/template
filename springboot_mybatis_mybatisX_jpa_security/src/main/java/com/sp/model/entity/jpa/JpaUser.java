@@ -63,7 +63,21 @@ public class JpaUser extends BaseEntity {
      */
     @Column(length = 1)
     @Comment("状态")
-    private String status;
+    private Integer status;
+
+    /**
+     * token过期时间 S
+     */
+    @Column
+    @Comment("token过期时间 S")
+    private Integer JwtExpire;
+
+    /**
+     * token
+     */
+    @Column
+    @Comment("jwtTkone用于实现同一账户只能在一个地方登录")
+    private Integer JwtToekn;
 
 
 }
