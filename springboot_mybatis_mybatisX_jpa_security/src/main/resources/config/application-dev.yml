@@ -64,7 +64,7 @@ spring:
 #     update：如果数据库中没有表结构，Hibernate 会创建它们；如果表结构已经存在但和映射文件不匹配，Hibernate 会更新表结构。这通常用于生产环境，因为它允许你在不丢失数据的情况下进行模式迁移。但是，请注意，自动更新模式并不总是安全的，因为它可能无法处理所有的模式变化。
 #     validate：验证数据库模式是否与映射文件匹配。如果不匹配，会抛出一个异常。这通常用于生产环境，以确保数据库模式与应用程序的期望相匹配。
 #     none ----什么都不做
-      ddl-auto: update
+      ddl-auto: create
       #命名规则
 #      naming:
         #命名规则
@@ -102,7 +102,8 @@ redis:
   #最大等待连接时间 S
   poolMaxWait: 3
 jwt:
-  base64-secret: kuju1qM4rppw5sjgMx5WH
+  #密钥用于token签名，防止拿到userId之后仿造token
+  base64-secret: 2GKkHWdj/gZFf37n9boeWCjnE2MycukKE58xQQMArdU=
   #多久不操作登录失效
   max-idle-second: 3600
   #登录成功之后最大有效期间 单位 S(24h)

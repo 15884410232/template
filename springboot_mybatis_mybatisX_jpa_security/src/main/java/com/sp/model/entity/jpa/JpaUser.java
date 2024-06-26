@@ -77,7 +77,7 @@ public class JpaUser extends BaseEntity {
      */
     @Column
     @Comment("jwtTkone用于实现同一账户只能在一个地方登录")
-    private Integer JwtToekn;
+    private String JwtToekn;
 
 
 }

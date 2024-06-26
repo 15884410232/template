@@ -49,7 +49,7 @@ public class LoginServiceImpl implements LoginService {
         //获取AuthenticationManager的authenticate方法来进行用户认证
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         //判断上面那行的authenticate是否为null，如果是则认证没通过，就抛出异常
-        if(Objects.isNull(authenticate)){
+        if(Objects.isNull(authenticate)||!authenticate.isAuthenticated()){
             throw new RuntimeException("登录失败");
         }
         //如果认证通过，就使用userid生成一个jwt，然后把jwt存入ResponseResult后返回
@@ -60,10 +60,12 @@ public class LoginServiceImpl implements LoginService {
         //设置权限
         List<String> permissions = permissionMapper.findAllByUserId(userid);
         loginUser.setPermissions(permissions);
-        //把完整的用户信息存入redis
-        redisUtil.set(token,loginUser);
+        //把完整的用户信息和token存入redis
+        redisUtil.set("login_"+userid,loginUser);
+        redisUtil.set("token_"+userid,token);
+        redisUtil.expire("login_"+userid, jwtConfig.getMaxLiveSecond());
         //设置redis的过期时间为token的最大存活时间
-        redisUtil.expire(token, jwtConfig.getMaxLiveSecond());
+        redisUtil.expire("token_"+userid, jwtConfig.getMaxLiveSecond());
         LoginSuccessVo loginSuccessVo=new LoginSuccessVo();
         loginSuccessVo.setToken(token);
         loginSuccessVo.setPermissions(permissions);
