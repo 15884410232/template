@@ -1,6 +1,10 @@
 package com.sp.config.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sp.common.enums.MyUrlEnum;
+import com.sp.common.filter.MyCharacterEncodingFilter;
 import com.sp.config.jwt.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +27,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Resource
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Resource
+    private MyCharacterEncodingFilter myCharacterEncodingFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -41,11 +51,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 // 指定的接口直接放行
-                .antMatchers("/account/login").permitAll()
+                .antMatchers(MyUrlEnum.login.getPath()).permitAll()
                 // 其他的接口都需要认证后才能请求
                 .anyRequest().authenticated();
-
+//        http.formLogin().loginPage("/account/login").permitAll().failureHandler(customAuthenticationFailureHandler());
+        //登录认证失败处理器
+//        http.formLogin().failureHandler(customAuthenticationFailureHandler());
+//        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);// 设置权限不足处理器
+        //当用户未登录访问需要权限时，返回401
+        http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(new ObjectMapper()));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(myCharacterEncodingFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 
 

@@ -31,6 +31,10 @@ public class Result<T> implements Serializable {
      */
     private T data;
 
+    public Result(){
+
+    }
+
     public Result(ResultCode resultCode,T data) {
         this.code = resultCode.getCode();
         this.message = resultCode.getMessage();

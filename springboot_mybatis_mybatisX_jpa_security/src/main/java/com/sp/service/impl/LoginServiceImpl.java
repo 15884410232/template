@@ -3,6 +3,7 @@ package com.sp.service.impl;
 import com.sp.common.util.JwtUitl;
 import com.sp.common.util.RedisUtil;
 import com.sp.common.util.ResultUtil;
+import com.sp.common.util.TimeUtil;
 import com.sp.config.jwt.JwtConfig;
 import com.sp.config.security.MyUserDetails;
 import com.sp.mapper.PermissionMapper;
@@ -61,11 +62,16 @@ public class LoginServiceImpl implements LoginService {
         List<String> permissions = permissionMapper.findAllByUserId(userid);
         loginUser.setPermissions(permissions);
         //把完整的用户信息和token存入redis
-        redisUtil.set("login_"+userid,loginUser);
-        redisUtil.set("token_"+userid,token);
+        redisUtil.set("login_"+userid,loginUser,jwtConfig.getMaxLiveSecond());
+        redisUtil.set("token_"+userid,token,jwtConfig.getMaxLiveSecond());
         redisUtil.expire("login_"+userid, jwtConfig.getMaxLiveSecond());
         //设置redis的过期时间为token的最大存活时间
         redisUtil.expire("token_"+userid, jwtConfig.getMaxLiveSecond());
+
+        //设置最大空闲时间
+        long now = TimeUtil.getUnixTime();
+        redisUtil.set("maxIdel_"+userid,now+jwtConfig.getMaxIdleSecond());
+
         LoginSuccessVo loginSuccessVo=new LoginSuccessVo();
         loginSuccessVo.setToken(token);
         loginSuccessVo.setPermissions(permissions);

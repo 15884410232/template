@@ -7,16 +7,19 @@ package com.sp.common.enums;
  */
 public enum ResultCode {
 
-    /* 成功 */
     SUCCESS(200, "成功"),
-    /* 默认失败 */
+
     FAIL(500, "系统错误"),
-    /* 参数错误：1000～1999 */
-    PARAM_ERROR(1001, "参数错误"),
-    /* 未登录 */
-    USER_NOT_LOGIN(2001, "用户未登录"),
-    /* 没有权限 */
-    NO_PERMISSION(3001, "没有权限");
+
+    PARAM_ERROR(400, "参数错误"),
+
+    USER_NOT_LOGIN(401, "用户未登录"),
+
+    USER_TIME_OUT(401, "账号超时，请重新登录"),
+
+    USER_EXPIRE(401, "账号已在其他地方登录，请重新登录"),
+
+    NO_PERMISSION(403, "没有权限");
 
     private Integer code;
 

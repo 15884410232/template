@@ -36,4 +36,12 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+
+//    @Bean
+//    public FilterRegistrationBean<MyCharacterEncodingFilter> myCharacterEncodingFilter() {
+//        FilterRegistrationBean<MyCharacterEncodingFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new MyCharacterEncodingFilter());
+//        registrationBean.addUrlPatterns("/*");
+//        return registrationBean;
+//    }
 }

@@ -1,8 +1,14 @@
 package com.sp.config.jwt;
 
+import com.sp.common.enums.MyUrlEnum;
+import com.sp.common.enums.ResultCode;
+import com.sp.common.exception.MyAuthenticationException;
 import com.sp.common.util.JwtUitl;
 import com.sp.common.util.RedisUtil;
+import com.sp.common.util.TimeUtil;
 import com.sp.config.security.MyUserDetails;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -25,6 +31,9 @@ import java.util.Objects;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Resource
+    private JwtConfig jwtConfig;
+
+    @Resource
     private JwtUitl jwtUitl;
 
     @Resource
@@ -38,31 +47,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         //获取token
         String token = httpServletRequest.getHeader("token");
-        if(!StringUtils.hasText(token)||httpServletRequest.getRequestURI().equals("/account/login")){
-            //如果token为空，则直接放行，因为在后续的过滤器链中，还有security相关的认证过滤器会校验是否登录，所以可以直接放行
+        //如果是登录接口直接放行
+        if(httpServletRequest.getRequestURI().equals(MyUrlEnum.login.getPath())){
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return ;
+
+        }
+        //如果是其他接口，需要校验token
+        if(!StringUtils.hasText(token)){
+            //没有传递token,提示未登录
+            throw new AuthenticationCredentialsNotFoundException(ResultCode.USER_NOT_LOGIN.getMessage());
         }
         //解析token
         JwtUser jwtUser = jwtUitl.parseToken(token);
         //从redis获取用户信息
         MyUserDetails user = (MyUserDetails)redisUtil.get("login_"+jwtUser.getUserId());
-        String oldToken = (String) redisUtil.get("token_"+jwtUser.getUserId());
-        if(token!=oldToken){
-            //用户重新登录了，将原来的token从redis中删除
-            redisUtil.del("token_"+jwtUser.getUserId());
-        }
-//        jwtUitl.parseToken(token)
         //判断获取到的用户信息是否为空，因为redis里面可能并不存在这个用户信息，例如缓存过期了
         if(Objects.isNull(user)){
-            //抛出一个异常
-            throw new RuntimeException("用户未登录");
+            //用户请求的token和redis中存的token不一致，则用户多地登录被挤掉了，提示重新登录
+            throw new MyAuthenticationException(ResultCode.USER_NOT_LOGIN.getMessage());
         }
+        String redisToken = (String) redisUtil.get("token_"+jwtUser.getUserId());
+        if(!token.equals(redisToken)){
+            //用户请求的token和redis中存的token不一致，则用户多地登录被挤掉了，提示重新登录
+            throw new AccountExpiredException(ResultCode.USER_EXPIRE.getMessage());
+        }
+        Long maxIdle = (Long)redisUtil.get("maxIdel_" + jwtUser.getUserId());
+        long now = TimeUtil.getUnixTime();
+        if(now>maxIdle){
+            //用户登录超时，提示重新登录
+            throw new AccountExpiredException(ResultCode.USER_TIME_OUT.getMessage());
+        }
+        //更新redis中的token最大空闲时间，延续会话
+        redisUtil.set("maxIdel_"+jwtUser.getUserId(),now+jwtConfig.getMaxIdleSecond(),now+jwtConfig.getMaxIdleSecond());
+
         //把最终的LoginUser用户信息，通过setAuthentication方法，存入SecurityContextHolder
-        //TODO 获取权限信息封装到Authentication中
-        UsernamePasswordAuthenticationToken authenticationToken =
-                //第一个参数是LoginUser用户信息，第二个参数是凭证(null)，第三个参数是权限信息(null)
-                new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+        //第一个参数是LoginUser用户信息，第二个参数是凭证(null)，第三个参数是权限信息(null)
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
         //spring security就是根据authentication判断用户是否登录的
 //        authenticationToken.setAuthenticated(false);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
