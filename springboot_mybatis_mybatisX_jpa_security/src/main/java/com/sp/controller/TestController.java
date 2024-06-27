@@ -35,6 +35,7 @@ public class TestController {
      * @return
      */
 //    @PreAuthorize("hasAuthority('getUserList')")
+    @PreAuthorize("hasRole('admin')")
     @RequestMapping("/getUserList")
     public Result<Object> getUserList(HttpServletResponse response){
         List<User> list = userService.list();
@@ -45,7 +46,8 @@ public class TestController {
      * getUserList
      * @return
      */
-    @PreAuthorize("hasAuthority('front')")
+//    @PreAuthorize("hasRole()")
+    @PreAuthorize("hasRole('admin')")
     @RequestMapping("/addUser")
     public Result<Object> addUser(User user){
         PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();

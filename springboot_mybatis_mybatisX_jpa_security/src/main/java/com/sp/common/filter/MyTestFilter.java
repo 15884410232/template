@@ -1,9 +1,9 @@
 package com.sp.common.filter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 /**
@@ -11,7 +11,9 @@ import java.io.IOException;
  * @date 2022/3/19
  */
 @Slf4j
-@WebFilter(urlPatterns = "/*")
+//在security项目中。直接使用webFilter会失效，需要使用FilterRegistrationBean，指定顺序才会生效。自定义过滤器一定要指定顺序，否则失效
+//@WebFilter(urlPatterns = "/*")
+@Component
 public class MyTestFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

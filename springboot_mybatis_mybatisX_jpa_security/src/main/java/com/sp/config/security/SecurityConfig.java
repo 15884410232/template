@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sp.common.enums.MyUrlEnum;
 import com.sp.common.filter.MyCharacterEncodingFilter;
 import com.sp.config.jwt.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,13 +27,17 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    @Autowired
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
+//    @Autowired
+//    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Resource
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Resource
     private MyCharacterEncodingFilter myCharacterEncodingFilter;
+
+//    @Resource
+//    private MyTestFilter myTestFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,8 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);// 设置权限不足处理器
         //当用户未登录访问需要权限时，返回401
         http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint(new ObjectMapper()));
+//                accessDeniedHandler(new CustomAccessDeniedHandler(new ObjectMapper()));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(myCharacterEncodingFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(myTestFilter,UsernamePasswordAuthenticationFilter.class);
 
     }
 

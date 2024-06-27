@@ -108,7 +108,7 @@ jwt:
   #密钥用于token签名，防止拿到userId之后仿造token
   base64-secret: 2GKkHWdj/gZFf37n9boeWCjnE2MycukKE58xQQMArdU=
   #多久不操作登录失效
-  max-idle-second: 30
+  max-idle-second: 3600
   #登录成功之后最大有效期间 单位 S(24h)
   max-live-second:  86400
 

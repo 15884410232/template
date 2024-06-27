@@ -13,13 +13,13 @@ public enum ResultCode {
 
     PARAM_ERROR(400, "参数错误"),
 
-    USER_NOT_LOGIN(401, "用户未登录"),
+    USER_NOT_LOGIN(401, "账号已过期或未登录"),
 
     USER_TIME_OUT(401, "账号超时，请重新登录"),
 
     USER_EXPIRE(401, "账号已在其他地方登录，请重新登录"),
 
-    NO_PERMISSION(403, "没有权限");
+    NO_PERMISSION(403, "权限不足");
 
     private Integer code;
 

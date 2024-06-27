@@ -2,7 +2,6 @@ package com.sp.config.jwt;
 
 import com.sp.common.enums.MyUrlEnum;
 import com.sp.common.enums.ResultCode;
-import com.sp.common.exception.MyAuthenticationException;
 import com.sp.common.util.JwtUitl;
 import com.sp.common.util.RedisUtil;
 import com.sp.common.util.TimeUtil;
@@ -65,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //判断获取到的用户信息是否为空，因为redis里面可能并不存在这个用户信息，例如缓存过期了
         if(Objects.isNull(user)){
             //用户请求的token和redis中存的token不一致，则用户多地登录被挤掉了，提示重新登录
-            throw new MyAuthenticationException(ResultCode.USER_NOT_LOGIN.getMessage());
+            throw new AuthenticationCredentialsNotFoundException(ResultCode.USER_NOT_LOGIN.getMessage());
         }
         String redisToken = (String) redisUtil.get("token_"+jwtUser.getUserId());
         if(!token.equals(redisToken)){

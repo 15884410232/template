@@ -1,8 +1,10 @@
 package com.sp.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.sp.model.entity.Role;
 import org.apache.ibatis.annotations.Param;
 
-import com.sp.model.entity.Role;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
 
 /**
 * @author 13967
@@ -13,6 +15,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface RoleMapper extends BaseMapper<Role> {
 
     Role findOneByCode(@Param("code") String code);
+
+    List<String> findAllByUserId(@Param("userId") Long userId);
 
 }
 

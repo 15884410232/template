@@ -1,11 +1,10 @@
 package com.sp.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sp.common.enums.ResultCode;
 import com.sp.common.util.ResultUtil;
-import com.sp.model.dto.response.base.Result;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+//@Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint,  HandlerExceptionResolver {
 
     private final ObjectMapper objectMapper;
@@ -32,13 +31,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint,
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        Result result=new Result();
-        result.setCode(HttpServletResponse.SC_UNAUTHORIZED);
-        result.setMessage(authException.getMessage());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         // 将错误信息转化为JSON字符串并写入响应体
-        objectMapper.writeValue(response.getWriter(), ResultUtil.fail(authException.getMessage()));
+        objectMapper.writeValue(response.getWriter(),  ResultUtil.fail(ResultCode.USER_NOT_LOGIN));
     }
+
+
 
     // HandlerExceptionResolver 接口方法，这里用于额外捕获和处理非标准流程中的异常
     @Override

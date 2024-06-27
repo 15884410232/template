@@ -30,4 +30,13 @@
         where
         code = #{code,jdbcType=VARCHAR}
     </select>
+    <select id="findAllByUserId" resultType="java.lang.String">
+        select
+            code
+        from role t01
+        inner join user_role t02 on t01.id = t02.role_id
+        where
+            t02.user_id = #{userId,jdbcType=BIGINT}
+
+    </select>
 </mapper>

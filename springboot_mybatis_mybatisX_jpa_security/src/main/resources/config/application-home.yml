@@ -104,7 +104,7 @@ redis:
 jwt:
   base64-secret: kuju1qM4rppw5sjgMx5WH
   #多久不操作登录失效
-  max-idle-second: 36000
+  max-idle-second: 3600
   #登录成功之后最大有效期间 单位 S
   max-live-second: 1864000
 

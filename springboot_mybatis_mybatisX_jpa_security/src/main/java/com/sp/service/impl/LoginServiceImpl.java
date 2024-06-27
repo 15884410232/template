@@ -1,12 +1,10 @@
 package com.sp.service.impl;
 
-import com.sp.common.util.JwtUitl;
-import com.sp.common.util.RedisUtil;
-import com.sp.common.util.ResultUtil;
-import com.sp.common.util.TimeUtil;
+import com.sp.common.util.*;
 import com.sp.config.jwt.JwtConfig;
 import com.sp.config.security.MyUserDetails;
 import com.sp.mapper.PermissionMapper;
+import com.sp.mapper.RoleMapper;
 import com.sp.mapper.UserMapper;
 import com.sp.model.dto.req.LoginDto;
 import com.sp.model.dto.response.LoginSuccessVo;
@@ -36,6 +34,10 @@ public class LoginServiceImpl implements LoginService {
     @Resource
     private PermissionMapper permissionMapper;
 
+
+    @Resource
+    private RoleMapper roleMapper;
+
     @Resource
     private RedisUtil redisUtil;
 
@@ -44,6 +46,14 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Result doLogin(LoginDto loginDto) {
+
+        if(StringUtils.isBlank(loginDto.getUsername())){
+            return ResultUtil.fail("用户名不能为空");
+        }
+
+        if(StringUtils.isBlank(loginDto.getPassword())){
+            return ResultUtil.fail("密码不能为空");
+        }
 
         //用户在登录页面输入的用户名和密码
         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword());
@@ -60,6 +70,11 @@ public class LoginServiceImpl implements LoginService {
         String token = jwtUitl.generateToken(username, String.valueOf(userid));
         //设置权限
         List<String> permissions = permissionMapper.findAllByUserId(userid);
+        List<String> roles=roleMapper.findAllByUserId(userid);
+        //放入角色
+        for (String role : roles) {
+            permissions.add("ROLE_"+role);
+        }
         loginUser.setPermissions(permissions);
         //把完整的用户信息和token存入redis
         redisUtil.set("login_"+userid,loginUser,jwtConfig.getMaxLiveSecond());
