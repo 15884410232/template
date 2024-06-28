@@ -11,7 +11,7 @@ import java.io.IOException;
  * @date 2022/3/19
  */
 @Slf4j
-//在security项目中。直接使用webFilter会失效，需要使用FilterRegistrationBean，指定顺序才会生效。自定义过滤器一定要指定顺序，否则失效
+//在security项目中。直接使用webFilter会失效，需要使用FilterRegistrationBean
 //@WebFilter(urlPatterns = "/*")
 @Component
 public class MyTestFilter implements Filter {
