@@ -9,7 +9,12 @@ public enum MyUrlEnum {
     /**
      * 前台
      */
-    login("/account/login","登录地址");
+    login("/account/doLogin","登录地址"),
+
+    /**
+     * 前台
+     */
+    pass("/pass/**","无需登录访问地址");
 
     /**
      * 系统代码

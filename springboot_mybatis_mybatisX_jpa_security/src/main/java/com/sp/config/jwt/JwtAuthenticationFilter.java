@@ -1,7 +1,7 @@
 package com.sp.config.jwt;
 
-import com.sp.common.enums.MyUrlEnum;
-import com.sp.common.enums.ResultCode;
+import com.sp.common.comstant.CommonConstants;
+import com.sp.common.enums.ResultCodeEnum;
 import com.sp.common.util.JwtUitl;
 import com.sp.common.util.RedisUtil;
 import com.sp.common.util.TimeUtil;
@@ -46,8 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         //获取token
         String token = httpServletRequest.getHeader("token");
-        //如果是登录接口直接放行
-        if(httpServletRequest.getRequestURI().equals(MyUrlEnum.login.getPath())){
+        //如果是不需要登录的接口直接放行
+        if(passUrl(httpServletRequest.getRequestURI())){
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return ;
 
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //如果是其他接口，需要校验token
         if(!StringUtils.hasText(token)){
             //没有传递token,提示未登录
-            throw new AuthenticationCredentialsNotFoundException(ResultCode.USER_NOT_LOGIN.getMessage());
+            throw new AuthenticationCredentialsNotFoundException(ResultCodeEnum.USER_NOT_LOGIN.getMessage());
         }
         //解析token
         JwtUser jwtUser = jwtUitl.parseToken(token);
@@ -64,18 +64,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //判断获取到的用户信息是否为空，因为redis里面可能并不存在这个用户信息，例如缓存过期了
         if(Objects.isNull(user)){
             //用户请求的token和redis中存的token不一致，则用户多地登录被挤掉了，提示重新登录
-            throw new AuthenticationCredentialsNotFoundException(ResultCode.USER_NOT_LOGIN.getMessage());
+            throw new AuthenticationCredentialsNotFoundException(ResultCodeEnum.USER_NOT_LOGIN.getMessage());
         }
         String redisToken = (String) redisUtil.get("token_"+jwtUser.getUserId());
         if(!token.equals(redisToken)){
             //用户请求的token和redis中存的token不一致，则用户多地登录被挤掉了，提示重新登录
-            throw new AccountExpiredException(ResultCode.USER_EXPIRE.getMessage());
+            throw new AccountExpiredException(ResultCodeEnum.USER_EXPIRE.getMessage());
         }
         Long maxIdle = (Long)redisUtil.get("maxIdel_" + jwtUser.getUserId());
         long now = TimeUtil.getUnixTime();
         if(now>maxIdle){
             //用户登录超时，提示重新登录
-            throw new AccountExpiredException(ResultCode.USER_TIME_OUT.getMessage());
+            throw new AccountExpiredException(ResultCodeEnum.USER_TIME_OUT.getMessage());
         }
         //更新redis中的token最大空闲时间，延续会话
         redisUtil.set("maxIdel_"+jwtUser.getUserId(),now+jwtConfig.getMaxIdleSecond(),now+jwtConfig.getMaxIdleSecond());
@@ -89,5 +89,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //全部做完之后，就放行
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 
+    }
+
+    boolean passUrl(String url){
+        for (String passUrl : CommonConstants.passUrl) {
+            if(passUrl.endsWith("/**")){
+                int index =passUrl.lastIndexOf("/");
+                String prefix=passUrl.substring(0,index);
+                if(url.contains(prefix)){
+                    return true;
+                }
+            }
+            if(url.contains(passUrl)){
+                return true;
+            }
+        }
+        return false;
     }
 }

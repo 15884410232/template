@@ -1,7 +1,7 @@
 package com.sp.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sp.common.enums.ResultCode;
+import com.sp.common.enums.ResultCodeEnum;
 import com.sp.common.util.ResultUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -33,7 +33,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint,
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         // 将错误信息转化为JSON字符串并写入响应体
-        objectMapper.writeValue(response.getWriter(),  ResultUtil.fail(ResultCode.USER_NOT_LOGIN));
+        objectMapper.writeValue(response.getWriter(),  ResultUtil.fail(ResultCodeEnum.USER_NOT_LOGIN));
     }
 
 

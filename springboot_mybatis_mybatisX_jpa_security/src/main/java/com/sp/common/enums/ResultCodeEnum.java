@@ -5,7 +5,7 @@ package com.sp.common.enums;
  * @version 1.0
  * @createDate 2021/03/04 16:58
  */
-public enum ResultCode {
+public enum ResultCodeEnum {
 
     SUCCESS(200, "成功"),
 
@@ -25,7 +25,7 @@ public enum ResultCode {
 
     private String message;
 
-    ResultCode(Integer code, String message) {
+    ResultCodeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 // 指定的接口直接放行
-                .antMatchers(MyUrlEnum.login.getPath()).permitAll()
+                .antMatchers(MyUrlEnum.login.getPath(), MyUrlEnum.pass.getPath()).permitAll()
                 // 其他的接口都需要认证后才能请求
                 .anyRequest().authenticated();
 //        http.formLogin().loginPage("/account/login").permitAll().failureHandler(customAuthenticationFailureHandler());

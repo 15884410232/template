@@ -1,6 +1,6 @@
 package com.sp.model.dto.response.base;
 
-import com.sp.common.enums.ResultCode;
+import com.sp.common.enums.ResultCodeEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -35,14 +35,14 @@ public class Result<T> implements Serializable {
 
     }
 
-    public Result(ResultCode resultCode,T data) {
-        this.code = resultCode.getCode();
-        this.message = resultCode.getMessage();
+    public Result(ResultCodeEnum resultCodeEnum, T data) {
+        this.code = resultCodeEnum.getCode();
+        this.message = resultCodeEnum.getMessage();
         this.data = data;
     }
 
     public Result(String message) {
-        this.code = ResultCode.FAIL.getCode();
+        this.code = ResultCodeEnum.FAIL.getCode();
         this.message = message;
     }
 

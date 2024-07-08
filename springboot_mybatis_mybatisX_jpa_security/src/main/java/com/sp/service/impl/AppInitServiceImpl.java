@@ -2,7 +2,7 @@ package com.sp.service.impl;
 
 import com.sp.common.enums.PermissionType;
 import com.sp.common.enums.RoleEnum;
-import com.sp.common.enums.SourcePlat;
+import com.sp.common.enums.SourcePlatEnum;
 import com.sp.common.util.PasswordEncoderUtil;
 import com.sp.config.myParam.MyParam;
 import com.sp.mapper.*;
@@ -105,12 +105,12 @@ public class AppInitServiceImpl implements AppInitService {
     @Transactional(rollbackOn = Exception.class)
     public void initPermission() {
         //初始化前台系统根节点
-        Permission front = permissionMapper.findOneByCode(SourcePlat.front.getCode());
+        Permission front = permissionMapper.findOneByCode(SourcePlatEnum.front.getCode());
         if (front == null) {
             front = new Permission();
-            front.setCode(SourcePlat.front.getCode());
-            front.setName(SourcePlat.front.getName());
-            front.setSourcePlat(SourcePlat.front.getCode());
+            front.setCode(SourcePlatEnum.front.getCode());
+            front.setName(SourcePlatEnum.front.getName());
+            front.setSourcePlat(SourcePlatEnum.front.getCode());
             front.setType(PermissionType.menu.getCode());
             front.setUrl("/");
             front.setParentId("-1");
@@ -120,12 +120,12 @@ public class AppInitServiceImpl implements AppInitService {
         }
 
         //初始化后台台系统根节点
-        Permission back = permissionMapper.findOneByCode(SourcePlat.back.getCode());
+        Permission back = permissionMapper.findOneByCode(SourcePlatEnum.back.getCode());
         if (back == null) {
             back = new Permission();
-            back.setCode(SourcePlat.back.getCode());
-            back.setName(SourcePlat.back.getName());
-            back.setSourcePlat(SourcePlat.back.getCode());
+            back.setCode(SourcePlatEnum.back.getCode());
+            back.setName(SourcePlatEnum.back.getName());
+            back.setSourcePlat(SourcePlatEnum.back.getCode());
             back.setType(PermissionType.menu.getCode());
             back.setUrl("/");
             back.setParentId("-1");

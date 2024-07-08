@@ -5,7 +5,7 @@ package com.sp.common.enums;
  * @author chenqi
  * @date 2022/3/27
  */
-public enum SourcePlat {
+public enum SourcePlatEnum {
     /**
      * 前台
      */
@@ -26,7 +26,7 @@ public enum SourcePlat {
      */
     private String name;
 
-    SourcePlat(String code, String name){
+    SourcePlatEnum(String code, String name){
         this.code=code;
         this.name=name;
     }

@@ -1,0 +1,52 @@
+/*按钮背景色*/
+.btn_primary{
+    background: #367fa98a;
+}
+/*按钮背景色*/
+.el-button--primary:focus, .el-button--primary:hover {
+    background: #567faa;
+    border-color: #66b1ff;
+    color: #FFF;
+}
+/*表格上下边距缩小*/
+.el-table .el-table__cell {
+    padding: 6px 0;
+}
+/*对话框内容上边距缩小*/
+.el-dialog--center .el-dialog__body {
+    text-align: initial;
+    padding: 15px 25px 30px;
+}
+/*对话框标题背景*/
+.el-dialog__header {
+    padding: 20px 20px 10px;
+    background: #d5cece;
+}
+/*卡片内边距*/
+.mycard .el-card__body {
+    padding: 5px 20px !important;
+}
+/*分页插件上边距*/
+.el-pagination {
+    margin-top: 10px;
+}
+/*对话框标题上边距*/
+.el-dialog__header {
+    padding: 10px 20px 10px;
+}
+.inline_block{
+    display: inline-block;
+}
+
+.success{
+    color: #409eff;
+}
+.error{
+    color: #f56c6c;
+}
+.warning{
+    color: #e6a23c;
+}
+.green{
+    color: rgb(67, 184, 67);
+}

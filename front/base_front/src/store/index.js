@@ -77,6 +77,7 @@ const store = new Vuex.Store({
   getters,
   // 应用插件以实现状态持久化，使用自定义的加密存储
   plugins: [
+    // createPersistedState()
     createPersistedState({
       // 持久化存储的键
       key: vuexKey,

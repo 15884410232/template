@@ -6,10 +6,17 @@ import request from "../util/request";
  * @param {*} data 
  * @returns 
  */
-export function login(data) {
+export function doLogin(data) {
   return request({
     url: "/account/doLogin",
     method: "post",
     data
+  });
+}
+
+export function captcha() {
+  return request({
+    url: "/pass/captcha",
+    method: "post",
   });
 }

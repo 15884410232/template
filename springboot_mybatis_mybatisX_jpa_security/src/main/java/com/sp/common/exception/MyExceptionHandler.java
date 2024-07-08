@@ -1,6 +1,6 @@
 package com.sp.common.exception;
 
-import com.sp.common.enums.ResultCode;
+import com.sp.common.enums.ResultCodeEnum;
 import com.sp.common.util.ResultUtil;
 import com.sp.model.dto.response.base.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +43,6 @@ public class MyExceptionHandler {
     public Result<Object> accessDeniedException(Exception ex){
         log.info("accessDeniedException-----------------------");
 //        ex.printStackTrace();
-        return ResultUtil.fail(ResultCode.NO_PERMISSION);
+        return ResultUtil.fail(ResultCodeEnum.NO_PERMISSION);
     }
 }

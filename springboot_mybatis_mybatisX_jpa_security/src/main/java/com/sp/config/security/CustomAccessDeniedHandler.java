@@ -1,7 +1,7 @@
 package com.sp.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sp.common.enums.ResultCode;
+import com.sp.common.enums.ResultCodeEnum;
 import com.sp.common.util.ResultUtil;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -33,7 +33,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         // 返回给前端的JSON响应，根据实际情况调整
 
 //        response.getWriter().write(JSON.toJSONString(ResultUtil.fail(ResultCode.NO_PERMISSION)));
-        objectMapper.writeValue(response.getWriter(),  ResultUtil.fail(ResultCode.NO_PERMISSION));
+        objectMapper.writeValue(response.getWriter(),  ResultUtil.fail(ResultCodeEnum.NO_PERMISSION));
 
 
         // 或者重定向到无权限提示页面

@@ -19,6 +19,10 @@ export default {
   mounted() {
     // 实例挂载完成后调用。
     // 适合访问DOM或调用API。
+    this.$store.commit('setToken',"adbd")
+    this.$store.commit('setUserId',"1103230")
+    console.log("4334");
+    console.log(this.$env.VUE_APP_COOKIES_PREFIX)
   }
 };
 </script>
