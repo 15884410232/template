@@ -9,4 +9,8 @@ public class LoginDto {
 
     private String password;
 
+    private String captchaId;
+
+    private String captcha;
+
 }

@@ -16,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
-import java.security.SecureRandom;
+import java.security.*;
 import java.util.Base64;
 import java.util.Date;
 
@@ -115,6 +114,30 @@ class SpringbootApplicationTests {
         Key hmacKey = new SecretKeySpec(keyBytes, "HmacSHA512");
 
         System.out.println("Generated HS512 Secret Key (Base64 Encoded): " + base64EncodedKey);
+    }
+
+    @Test
+    public void genKey(){
+        try {
+            // 获取KeyPairGenerator实例
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+
+            // 初始化KeyPairGenerator，密钥长度为2048位
+            keyGen.initialize(2048);
+
+            // 生成密钥对
+            KeyPair keyPair = keyGen.generateKeyPair();
+
+            // 使用Base64编码公钥和私钥
+            String publicKeyBase64 = Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
+            String privateKeyBase64 = Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
+
+            // 输出Base64编码后的公钥和私钥
+            System.out.println("Public Key (Base64): " + publicKeyBase64);
+            System.out.println("Private Key (Base64): " + privateKeyBase64);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
 }

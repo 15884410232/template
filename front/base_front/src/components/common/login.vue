@@ -72,7 +72,7 @@
   
   <script>
 import { mapMutations } from "vuex";
-import { doLogin,captcha } from "@/api/loginApi";
+import { doLogin, captcha } from "@/api/loginApi";
 export default {
   data() {
     return {
@@ -84,7 +84,8 @@ export default {
       userDto: {
         username: "",
         password: "",
-        captcha: ""
+        captcha: "",
+        captchaId: ""
       },
       rules: {
         username: [
@@ -106,15 +107,12 @@ export default {
     };
   },
 
-  mounted: function() {},
+  mounted: function() {
+    this.refreshCode()
+  },
   methods: {
     ...mapMutations([
-      "setLoginUser",
-      "setPermissions",
-      "setRoles",
-      "setMenus",
-      "setCurrentRole",
-      "setUnreadNoticeCount"
+      "setToken"
     ]),
     findMenuByRoleId(checkRole) {
       this.$http({
@@ -133,38 +131,34 @@ export default {
       });
     },
 
-
-    refreshCode() {
-      // var timestamp = new Date().getTime();
-      // this.code_src = this.$url + "/pass/captcha" + "?timestamp=" + timestamp;
-      // this.fetchCaptcha();
-
-      
-      captcha().then((res) => {
-              console.log(res.data.captchaImage)
-              const imageUrl = URL.createObjectURL(new Blob([res.data.captchaImage], { type: 'image/png' }));
-              console.log(imageUrl)
-              document.getElementById('captcha').src = imageUrl;
-              this.code_src = imageUrl
-              console.log(res.data.captchaImage)
-          }).catch(()=>{
-
-          }).finally(() => {
-
-          })
+   async refreshCode() {
+      captcha()
+        .then(res => {
+          this.userDto.captchaId = res.data.captchaId;
+          this.code_src = "data:image/png;base64," + res.data.captchaImage;
+          // console.log(res.data.captchaImage);
+        })
+        .catch(() => {})
+        .finally(() => {});
     },
     login(formName) {
+      alert("dad")
       this.refreshCode();
       this.$refs[formName].validate(valid => {
         if (valid) {
+          doLogin(this.userDto)
+            .then(res => {
+              if(res.code==200){
+                this.setToken(res.data.token);
+                this.$router.push("/HelloWorld")
+              }else{
+                this.$message.error(res.message);
+              }
+              console.log(res)
 
-          doLogin(this.userDto).then((res) => {
-              // console.log(res)
-          }).catch(()=>{
-
-          }).finally(() => {
-
-          })
+            })
+            .catch(() => {})
+            .finally(() => {});
         } else {
           console.log("error submit!!");
           return false;

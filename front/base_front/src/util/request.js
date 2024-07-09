@@ -2,6 +2,7 @@ import axios from "axios";
 import store from '../store/index'
 import config from '../config/dev'
 import router from '../router'
+import otherUtil from '@/util/otherUtil'
 //编写axios的配置对象
 const request = axios.create({
     //基础路径
@@ -20,8 +21,11 @@ const request = axios.create({
 request.interceptors.request.use(config => {
     //config：配置对象，对象里面有一个属性很重要，headers请求头
     if(store.getters.token){
-        config.headers['token']=store.getters.token
+        config.headers['Authorization']=store.getters.token
     }
+    const a=otherUtil.signature(config)
+    console.log("a2222222")
+    console.log(a)
     //还可以设置语言和签名
     return config
 })

@@ -20,3 +20,10 @@ export function captcha() {
     method: "post",
   });
 }
+
+export function getUserList() {
+  return request({
+    url: "/test/getUserList",
+    method: "post",
+  });
+}
