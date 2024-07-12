@@ -24,7 +24,11 @@ export default {
   },
   methods:{
     test(){
-      getUserList().then(res=>{
+      let user={
+        username:'admin'
+      }
+      
+      getUserList(user).then(res=>{
         console.log(res)
       })
     }

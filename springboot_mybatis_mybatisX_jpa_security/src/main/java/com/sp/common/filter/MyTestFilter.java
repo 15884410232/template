@@ -1,8 +1,10 @@
 package com.sp.common.filter;
 
+import com.sp.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import redis.clients.jedis.JedisPool;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
 import java.io.IOException;
 
@@ -13,8 +15,14 @@ import java.io.IOException;
 @Slf4j
 //在security项目中。直接使用webFilter会失效，需要使用FilterRegistrationBean
 //@WebFilter(urlPatterns = "/*")
-@Component
+//@Component
 public class MyTestFilter implements Filter {
+    @Resource
+    private JedisPool jedisPool;
+
+    @Resource
+    private UserMapper userMapper;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         log.debug("MyTestFilter初始化");

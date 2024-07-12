@@ -1,5 +1,6 @@
 package com.sp.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.sp.common.util.ResultUtil;
 import com.sp.model.dto.response.base.Result;
 import com.sp.model.entity.User;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -37,11 +37,13 @@ public class TestController {
 //    @PreAuthorize("hasAuthority('getUserList')")
     @PreAuthorize("hasRole('admin')")
     @RequestMapping("/getUserList")
-    public Result<Object> getUserList(HttpServletResponse response){
-        List<User> list = userService.list();
+    public Result<Object> getUserList(@RequestBody User user){
+        LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper();
+        lambdaQueryWrapper.eq(User::getUsername, user.getId());
+        List<User> list = userService.list(lambdaQueryWrapper);
         return ResultUtil.success(list);
     }
-
+//
     /**
      * getUserList
      * @return

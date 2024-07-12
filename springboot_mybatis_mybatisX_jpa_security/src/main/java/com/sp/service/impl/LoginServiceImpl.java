@@ -55,21 +55,21 @@ public class LoginServiceImpl implements LoginService {
             return ResultUtil.fail("密码不能为空");
         }
 
-        if(StringUtils.isBlank(loginDto.getCaptcha())){
-            return ResultUtil.fail("验证码不能为空");
-        }
-        if(StringUtils.isBlank(loginDto.getCaptchaId())){
-            return ResultUtil.fail("验证码不能为空");
-        }
-        String captchaText = (String)redisUtil.get(loginDto.getCaptchaId());
-        if(StringUtils.isBlank(captchaText)){
-            return ResultUtil.fail("验证码已过期");
-        }
-        if(captchaText.equals(loginDto.getCaptcha())){
-            redisUtil.del(loginDto.getCaptchaId());
-        }else {
-            return ResultUtil.fail("验证码错误");
-        }
+//        if(StringUtils.isBlank(loginDto.getCaptcha())){
+//            return ResultUtil.fail("验证码不能为空");
+//        }
+//        if(StringUtils.isBlank(loginDto.getCaptchaId())){
+//            return ResultUtil.fail("验证码不能为空");
+//        }
+//        String captchaText = (String)redisUtil.get(loginDto.getCaptchaId());
+//        if(StringUtils.isBlank(captchaText)){
+//            return ResultUtil.fail("验证码已过期");
+//        }
+//        if(captchaText.equals(loginDto.getCaptcha())){
+//            redisUtil.del(loginDto.getCaptchaId());
+//        }else {
+//            return ResultUtil.fail("验证码错误");
+//        }
 
         //用户在登录页面输入的用户名和密码
         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword());

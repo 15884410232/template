@@ -21,9 +21,10 @@ export function captcha() {
   });
 }
 
-export function getUserList() {
+export function getUserList(data) {
   return request({
     url: "/test/getUserList",
     method: "post",
+    data
   });
 }
