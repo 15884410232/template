@@ -23,9 +23,10 @@ request.interceptors.request.use(config => {
     if(store.getters.token){
         config.headers['Authorization']=store.getters.token
     }
-    const a=otherUtil.signature(config)
+    const signature=otherUtil.signature(config)
+    config.headers['signature']=signature
     console.log("a2222222")
-    console.log(a)
+    console.log(signature)
     //还可以设置语言和签名
     return config
 })

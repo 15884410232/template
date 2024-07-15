@@ -1,5 +1,6 @@
 package com.sp.common.filter;
 
+import com.sp.common.comstant.CommonConstants;
 import com.sp.common.util.CommonUtils;
 import com.sp.common.util.Sha256Util;
 import com.sp.common.util.StringUtils;
@@ -11,6 +12,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,9 +55,10 @@ public class RequestFilter implements Filter {
             }
             String paramStr = meth.toLowerCase() + "/" + params;
             // 接口签名，压测注释了签名，真实环境需要放开    if (
-            if (apiSignature(httpServletRequest, requestWrapper.getBody(), paramStr)) {
+            if (!skipCheckSign(httpServletRequest.getRequestURI())&&!apiSignature(httpServletRequest, requestWrapper.getBody(), paramStr)) {
                 System.out.println(httpServletRequest.getRequestURI() + "签名错误");
-                return;
+                throw new AuthenticationException("签名错误");
+//                return;
             }
 
 
@@ -136,6 +139,9 @@ public class RequestFilter implements Filter {
 
                 String signToStr = "url=" + httpServletRequest.getRequestURI() + "&param=" + params + "&uuid=" + uuid + "&timeSpan=" + timeSpan + "&key=" + key;
 
+                String sig = Sha256Util.sha256_HMAC(signToStr, token);
+                log.info(token);
+                log.info(sig);
                 String bSign = Base64Util.encode(Sha256Util.sha256_HMAC(signToStr, token));
 
 
@@ -151,5 +157,18 @@ public class RequestFilter implements Filter {
             }
             return true;
         }
+
+
+
+        private boolean skipCheckSign(String url) {
+
+            for (String u : CommonConstants.ApiUrl.SKIP_SIGN) {
+                if (u.equals(url)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
 }

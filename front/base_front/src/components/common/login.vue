@@ -142,7 +142,6 @@ export default {
         .finally(() => {});
     },
     login(formName) {
-      alert("dad")
       this.refreshCode();
       this.$refs[formName].validate(valid => {
         if (valid) {

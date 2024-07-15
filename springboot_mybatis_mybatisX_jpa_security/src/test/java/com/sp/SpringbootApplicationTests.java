@@ -3,12 +3,14 @@ package com.sp;
 import com.alibaba.fastjson.JSON;
 import com.sp.common.exception.CommonException;
 import com.sp.common.util.JwtUitl;
+import com.sp.common.util.Sha256Util;
 import com.sp.common.util.TimeUtil;
 import com.sp.config.jwt.JwtUser;
 import com.sp.model.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.DefaultJws;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +22,7 @@ import java.security.*;
 import java.util.Base64;
 import java.util.Date;
 
+@Slf4j
 @SpringBootTest
 class SpringbootApplicationTests {
     @Resource
@@ -136,6 +139,18 @@ class SpringbootApplicationTests {
             System.out.println("Public Key (Base64): " + publicKeyBase64);
             System.out.println("Private Key (Base64): " + privateKeyBase64);
         } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void genKey2(){
+        String sig = null;
+        try {
+            sig = Sha256Util.sha256_HMAC("signToStr", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6IjE4MTI3MzU5ODQ5MzkzMDI5MTQiLCJpYXQiOjE3MjEwMjQ5MTcsImV4cCI6MTcyMTExMTMxN30.ncldfSC6_RpanOdJVA8mSOUl9EcrsX3Q3XIpDlEs0k36Wxqtm2UsZNmDTUnv2fsbw8ZoU9tlH3OKZBTKh8zqsQ");
+            log.info(sig);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

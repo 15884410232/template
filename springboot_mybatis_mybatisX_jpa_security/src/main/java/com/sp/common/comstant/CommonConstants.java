@@ -9,4 +9,14 @@ public class CommonConstants {
             = {
                     MyUrlEnum.login.getPath(),
                     MyUrlEnum.pass.getPath()};
+
+
+    public static class ApiUrl{
+        public static final String[] SKIP_SIGN = new String[]{
+                MyUrlEnum.login.getPath(),
+                MyUrlEnum.pass.getPath(),
+                "pass/captcha"
+        };
+    }
+
 }

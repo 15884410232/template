@@ -39,7 +39,7 @@ public class TestController {
     @RequestMapping("/getUserList")
     public Result<Object> getUserList(@RequestBody User user){
         LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper();
-        lambdaQueryWrapper.eq(User::getUsername, user.getId());
+        lambdaQueryWrapper.eq(User::getUsername, user.getUsername());
         List<User> list = userService.list(lambdaQueryWrapper);
         return ResultUtil.success(list);
     }
