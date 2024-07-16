@@ -15,7 +15,7 @@ public class CommonConstants {
         public static final String[] SKIP_SIGN = new String[]{
                 MyUrlEnum.login.getPath(),
                 MyUrlEnum.pass.getPath(),
-                "pass/captcha"
+                "/pass/captcha"
         };
     }
 

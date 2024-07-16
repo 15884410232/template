@@ -56,7 +56,6 @@ public class RequestFilter implements Filter {
             String paramStr = meth.toLowerCase() + "/" + params;
             // 接口签名，压测注释了签名，真实环境需要放开    if (
             if (!skipCheckSign(httpServletRequest.getRequestURI())&&!apiSignature(httpServletRequest, requestWrapper.getBody(), paramStr)) {
-                System.out.println(httpServletRequest.getRequestURI() + "签名错误");
                 throw new AuthenticationException("签名错误");
 //                return;
             }

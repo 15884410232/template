@@ -9,6 +9,10 @@ import rsa from 'js-crypto-rsa';
 import CryptoJS from 'crypto-js';
 import _ from 'lodash';
 
+import env from '../config/dev'
+
+import store from '../store/index'
+
 var _mime = function (option, value) {
     var mimeTypes = navigator.mimeTypes;
     for (var mt in mimeTypes) {
@@ -312,10 +316,10 @@ class CommonFunc {
             let param = '';
             let url = '';
             if (!!config.baseURL) {
-                url = (config.baseURL + config.url.split('?')[0]).replace(process.env.VUE_APP_BASE_API, '')
+                url = (config.baseURL + config.url.split('?')[0]).replace(env.BASE_API_URL, '')
             }
             else {
-                url = config.url.split('?')[0].replace(process.env.VUE_APP_BASE_API, '')
+                url = config.url.split('?')[0].replace(env.BASE_API_URL, '')
             }
             if (url[0] != '/') {
                 url = '/' + url;
@@ -332,8 +336,8 @@ class CommonFunc {
             param = config.method.toLowerCase() + '/' + param;
             console.log('param:', param);
             const uuid = this.newGuid();
-            const key = 'apex-fontent';
-            const token = 'apex-backend';
+            const key = 'fontent';
+            const token = store.getters.token
             const timeSpan = Date.parse(new Date());
 
             url = encodeURI(url);
@@ -341,10 +345,10 @@ class CommonFunc {
             signToStr = `url=${url}&param=${param}&uuid=${uuid}&timeSpan=${timeSpan}&key=${key}`;
             console.log("signToStr")
             console.log(signToStr)
-            //console.log('signToStr:', signToStr);
+            console.log('token:', token);
             signature = `sign=${window.btoa(CryptoJS.HmacSHA256(signToStr, token).toString())}&uuid=${uuid}&timeSpan=${timeSpan}&key=${key}`;
 
-            // console.log('signature:', signature);
+            console.log('signature:', signature);
         } catch (e) {
             console.log(e);
         }
