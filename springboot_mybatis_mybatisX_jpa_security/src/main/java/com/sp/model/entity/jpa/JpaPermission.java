@@ -37,6 +37,12 @@ public class JpaPermission extends BaseEntity {
     private String type;
 
     /**
+     * 图标
+     */
+    @Column(length = 64)
+    private String icon;
+
+    /**
      * 资源路径
      */
     @Column(length = 256)
