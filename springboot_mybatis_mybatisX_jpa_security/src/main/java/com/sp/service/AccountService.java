@@ -1,11 +1,11 @@
 package com.sp.service;
 
-import com.sp.model.entity.Permission;
+import com.sp.model.dto.response.PermissionVo;
 
 import java.util.List;
 
 public interface AccountService {
 
-    public List<Permission> getMenu(Long userId,Long roleId);
+    public List<PermissionVo> getMenu(Long userId, Long roleId);
 
 }

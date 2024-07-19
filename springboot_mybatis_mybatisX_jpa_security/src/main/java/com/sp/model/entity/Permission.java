@@ -37,7 +37,7 @@ public class Permission extends BaseEntity implements Serializable {
     /**
      * 父级id
      */
-    private String parentId;
+    private Long parentId;
 
     /**
      * 所属系统(用于区分前后台)

@@ -149,7 +149,7 @@ export default {
             .then(res => {
               if(res.code==200){
                 this.setToken(res.data.token);
-                this.$router.push("/HelloWorld")
+                this.$router.push("/home")
               }else{
                 this.$message.error(res.message);
               }

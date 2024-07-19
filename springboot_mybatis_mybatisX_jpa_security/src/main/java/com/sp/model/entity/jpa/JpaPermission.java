@@ -61,7 +61,7 @@ public class JpaPermission extends BaseEntity {
      */
     @Column(length = 32)
     @Comment("父级id")
-    private String parentId;
+    private Long parentId;
 
     /**
      * 排序

@@ -31,6 +31,14 @@
         parent_id,source_plat,type,
         url
     </sql>
+    <sql id="T01_Base_Column_List">
+        t01.id,t01.create_by,t01.create_time,
+        t01.deleted_time,t01.is_deleted,t01.update_by,
+        t01.update_time,t01.version,t01.code,
+        t01.icon,t01.list_sort,t01.name,
+        t01.parent_id,t01.source_plat,t01.type,
+        t01.url
+    </sql>
     <select id="findOneByCode" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -49,7 +57,7 @@
     </select>
     <select id="getMenu" resultType="com.sp.model.entity.Permission">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="T01_Base_Column_List"/>
         from permission t01,role_permission t02,role t03,user_role t04,
         user t05
         where
@@ -58,6 +66,6 @@
           <if test="roleId != null">
             and t03.id = #{roleId,jdbcType=BIGINT}
           </if>
-        and t01.type = 'menu'
+        and t01.type = 'menu' and t01.source_plat = 'back'
     </select>
 </mapper>

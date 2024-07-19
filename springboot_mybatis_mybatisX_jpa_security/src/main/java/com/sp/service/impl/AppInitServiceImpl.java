@@ -113,7 +113,7 @@ public class AppInitServiceImpl implements AppInitService {
             front.setSourcePlat(SourcePlatEnum.front.getCode());
             front.setType(PermissionType.menu.getCode());
             front.setUrl("/");
-            front.setParentId("-1");
+            front.setParentId(-1L);
             front.setCreateBy(0L);
             front.setUpdateBy(0L);
             permissionMapper.insert(front);
@@ -128,7 +128,7 @@ public class AppInitServiceImpl implements AppInitService {
             back.setSourcePlat(SourcePlatEnum.back.getCode());
             back.setType(PermissionType.menu.getCode());
             back.setUrl("/");
-            back.setParentId("-1");
+            back.setParentId(-1L);
             back.setCreateBy(0L);
             back.setUpdateBy(0L);
             permissionMapper.insert(back);
@@ -165,7 +165,7 @@ public class AppInitServiceImpl implements AppInitService {
             userManager.setSourcePlat(SourcePlatEnum.back.getCode());
             userManager.setType(PermissionType.menu.getCode());
             userManager.setUrl("/");
-            userManager.setParentId("-1");
+            userManager.setParentId(back.getId());
             userManager.setCreateBy(0L);
             userManager.setUpdateBy(0L);
             permissionMapper.insert(userManager);
@@ -186,7 +186,7 @@ public class AppInitServiceImpl implements AppInitService {
         if (addUser == null) {
             addUser = new Permission();
             addUser.setCode("addUser");
-            addUser.setName("用户管理");
+            addUser.setName("新增用户");
             addUser.setSourcePlat(SourcePlatEnum.back.getCode());
             addUser.setType(PermissionType.menu.getCode());
             addUser.setUrl("/");
@@ -196,14 +196,14 @@ public class AppInitServiceImpl implements AppInitService {
             permissionMapper.insert(addUser);
         }
 
-        RolePermission userManagerRolePermission = rolePermissionMapper.findOneByRoleIdAndPermissionId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId(), userManager.getId());
-        if (userManagerRolePermission == null) {
-            userManagerRolePermission = new RolePermission();
-            userManagerRolePermission.setRoleId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId());
-            userManagerRolePermission.setPermissionId(userManager.getId());
-            userManagerRolePermission.setCreateBy(0L);
-            userManagerRolePermission.setUpdateBy(0L);
-            rolePermissionMapper.insert(userManagerRolePermission);
+        RolePermission addUserRolePermission = rolePermissionMapper.findOneByRoleIdAndPermissionId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId(), addUser.getId());
+        if (addUserRolePermission == null) {
+            addUserRolePermission = new RolePermission();
+            addUserRolePermission.setRoleId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId());
+            addUserRolePermission.setPermissionId(addUser.getId());
+            addUserRolePermission.setCreateBy(0L);
+            addUserRolePermission.setUpdateBy(0L);
+            rolePermissionMapper.insert(addUserRolePermission);
         }
     }
 }

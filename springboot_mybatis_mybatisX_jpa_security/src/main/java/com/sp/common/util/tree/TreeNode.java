@@ -14,9 +14,9 @@ import java.util.List;
 @JsonInclude(value= JsonInclude.Include.NON_NULL)
 public class TreeNode {
 
-    protected String id;
+    protected Long id;
 
-    protected String parentId;
+    protected Long parentId;
 
     protected List<TreeNode> children;
 }

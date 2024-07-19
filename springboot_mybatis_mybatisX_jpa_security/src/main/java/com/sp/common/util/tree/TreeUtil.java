@@ -16,7 +16,7 @@ public class TreeUtil{
      * @param <T>
      * @return
      */
-    public static <T extends TreeNode> List<T> buildTree(List<T> list,String root){
+    public static <T extends TreeNode> List<T> buildTree(List<T> list,Long root){
         List<T> tree=new LinkedList<>();
         for (T t : list) {
             if(t.getParentId().equals(root)) {
