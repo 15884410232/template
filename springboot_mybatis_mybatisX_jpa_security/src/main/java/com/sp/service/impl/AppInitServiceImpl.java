@@ -153,5 +153,57 @@ public class AppInitServiceImpl implements AppInitService {
             backRolePermission.setUpdateBy(0L);
             rolePermissionMapper.insert(backRolePermission);
         }
+
+
+
+        //初始化后台台系统根节点
+        Permission userManager = permissionMapper.findOneByCode("userManager");
+        if (userManager == null) {
+            userManager = new Permission();
+            userManager.setCode("userManager");
+            userManager.setName("用户管理");
+            userManager.setSourcePlat(SourcePlatEnum.back.getCode());
+            userManager.setType(PermissionType.menu.getCode());
+            userManager.setUrl("/");
+            userManager.setParentId("-1");
+            userManager.setCreateBy(0L);
+            userManager.setUpdateBy(0L);
+            permissionMapper.insert(userManager);
+        }
+
+        RolePermission userManagerRolePermission = rolePermissionMapper.findOneByRoleIdAndPermissionId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId(), userManager.getId());
+        if (userManagerRolePermission == null) {
+            userManagerRolePermission = new RolePermission();
+            userManagerRolePermission.setRoleId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId());
+            userManagerRolePermission.setPermissionId(userManager.getId());
+            userManagerRolePermission.setCreateBy(0L);
+            userManagerRolePermission.setUpdateBy(0L);
+            rolePermissionMapper.insert(userManagerRolePermission);
+        }
+
+        //初始化后台台系统根节点
+        Permission addUser = permissionMapper.findOneByCode("addUser");
+        if (addUser == null) {
+            addUser = new Permission();
+            addUser.setCode("addUser");
+            addUser.setName("用户管理");
+            addUser.setSourcePlat(SourcePlatEnum.back.getCode());
+            addUser.setType(PermissionType.menu.getCode());
+            addUser.setUrl("/");
+            addUser.setParentId(userManager.getId());
+            addUser.setCreateBy(0L);
+            addUser.setUpdateBy(0L);
+            permissionMapper.insert(addUser);
+        }
+
+        RolePermission userManagerRolePermission = rolePermissionMapper.findOneByRoleIdAndPermissionId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId(), userManager.getId());
+        if (userManagerRolePermission == null) {
+            userManagerRolePermission = new RolePermission();
+            userManagerRolePermission.setRoleId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId());
+            userManagerRolePermission.setPermissionId(userManager.getId());
+            userManagerRolePermission.setCreateBy(0L);
+            userManagerRolePermission.setUpdateBy(0L);
+            rolePermissionMapper.insert(userManagerRolePermission);
+        }
     }
 }

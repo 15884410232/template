@@ -28,11 +28,11 @@
         mobile,nickname,password,
         status,username
     </sql>
-    <select id="findOneByUsername" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        where
-        username = #{username,jdbcType=VARCHAR}
-    </select>
+<!--    <select id="findOneByUsername" resultMap="BaseResultMap">-->
+<!--        select-->
+<!--        <include refid="Base_Column_List"/>-->
+<!--        from user-->
+<!--        where-->
+<!--        username = #{username,jdbcType=VARCHAR}-->
+<!--    </select>-->
 </mapper>

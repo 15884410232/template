@@ -1,6 +1,6 @@
 package com.sp.config.security;
 
-import com.sp.mapper.UserMapper;
+import com.sp.mapper.UserExtMapper;
 import com.sp.model.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,14 +23,14 @@ import java.util.Objects;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Resource
-    private UserMapper userMapper;
+    private UserExtMapper userExtMapper;
 
     @Override
     //UserDetails是Security官方提供的接口
     public UserDetails loadUserByUsername(String xxusername) throws UsernameNotFoundException {
 
         //查询用户信息。我们写的userMapper接口里面是空的，所以调用的是mybatis-plus提供的方法
-        User dbUser = userMapper.findOneByUsername(xxusername);
+        User dbUser = userExtMapper.findOneByUsername(xxusername);
         //如果用户传进来的用户名，但是数据库没有这个用户名，就会导致我们是查不到的情况，那么就进行下面的判断。避免程序安全问题
         if(Objects.isNull(dbUser)){//判断user对象是否为空。当在数据库没有查到数据时，user就会为空，也就会进入这个判断
             throw new RuntimeException("用户不存在");

@@ -90,7 +90,7 @@ mybatis-plus:
       #table-prefix: t_
       # 设置统一的主键生成策略 雪花算法
       id-type: assign_id
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml,classpath:mapper/ext/*.xml
 redis:
   host: localhost
   port: 6379

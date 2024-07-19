@@ -1,12 +1,11 @@
 package com.sp.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.sp.model.entity.base.BaseEntity;
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 
@@ -19,6 +18,11 @@ public class Permission extends BaseEntity implements Serializable {
      * 角色代码
      */
     private String code;
+
+    /**
+     * 
+     */
+    private String icon;
 
     /**
      * 排序
@@ -74,6 +78,7 @@ public class Permission extends BaseEntity implements Serializable {
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals(other.getVersion()))
             && (this.getCode() == null ? other.getCode() == null : this.getCode().equals(other.getCode()))
+            && (this.getIcon() == null ? other.getIcon() == null : this.getIcon().equals(other.getIcon()))
             && (this.getListSort() == null ? other.getListSort() == null : this.getListSort().equals(other.getListSort()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getParentId() == null ? other.getParentId() == null : this.getParentId().equals(other.getParentId()))
@@ -95,6 +100,7 @@ public class Permission extends BaseEntity implements Serializable {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getVersion() == null) ? 0 : getVersion().hashCode());
         result = prime * result + ((getCode() == null) ? 0 : getCode().hashCode());
+        result = prime * result + ((getIcon() == null) ? 0 : getIcon().hashCode());
         result = prime * result + ((getListSort() == null) ? 0 : getListSort().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
@@ -111,6 +117,7 @@ public class Permission extends BaseEntity implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", code=").append(code);
+        sb.append(", icon=").append(icon);
         sb.append(", listSort=").append(listSort);
         sb.append(", name=").append(name);
         sb.append(", parentId=").append(parentId);

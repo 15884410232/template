@@ -14,6 +14,7 @@
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="version" column="version" jdbcType="INTEGER"/>
             <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
             <result property="listSort" column="list_sort" jdbcType="INTEGER"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
@@ -26,8 +27,9 @@
         id,create_by,create_time,
         deleted_time,is_deleted,update_by,
         update_time,version,code,
-        list_sort,name,parent_id,
-        source_plat,type,url
+        icon,list_sort,name,
+        parent_id,source_plat,type,
+        url
     </sql>
     <select id="findOneByCode" resultMap="BaseResultMap">
         select
@@ -44,5 +46,18 @@
              inner join user_role t03 on t02.role_id = t03.role_id
         where
         t03.user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="getMenu" resultType="com.sp.model.entity.Permission">
+        select
+        <include refid="Base_Column_List"/>
+        from permission t01,role_permission t02,role t03,user_role t04,
+        user t05
+        where
+        t01.id = t02.permission_id and t02.role_id = t03.id and t03.id = t04.role_id and t04.user_id = t05.id
+        and t05.id = #{userId,jdbcType=BIGINT}
+          <if test="roleId != null">
+            and t03.id = #{roleId,jdbcType=BIGINT}
+          </if>
+        and t01.type = 'menu'
     </select>
 </mapper>
