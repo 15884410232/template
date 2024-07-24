@@ -1,20 +1,23 @@
 <template>
   <div>
     <el-container>
-      <el-aside width="200px" direction="vertical">
-        <div class="logo">sad</div>
+      <!-- <el-aside class="aside" direction="vertical"> -->
+
+      <div class="aside">
+        <div class="logo">FRONT</div>
+
         <el-menu
           mode="vertical"
           default-active="2"
           class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
           :collapse="isCollapse"
-          background-color="#545c64"
+          background-color="#001529"
           text-color="#fff"
           active-text-color="#ffd04b"
+          router
+          @select="changeMenu"
         >
-          <template v-for="(item, index) in menus[0].children">
+          <template v-for="(item, index) in menus">
             <el-submenu :index="item.url" v-if="item.children && item.children.length" :key="index">
               <template slot="title">
                 <i :class="item.icon"></i>
@@ -26,16 +29,27 @@
                 :key="child.id"
               >{{ child.name }}</el-menu-item>
             </el-submenu>
-            <el-menu-item v-else :index="item.url" :key="item.id">
+            <el-menu-item v-else :index="item.url" :key="item.name">
               <i :class="item.icon"></i>
               <span slot="title">{{ item.name }}</span>
             </el-menu-item>
           </template>
         </el-menu>
-      </el-aside>
+      </div>
+      <!-- </el-aside> -->
       <el-container>
-        <el-header>Header</el-header>
-        <el-main>Main</el-main>
+        <el-header>
+          <div class="collapse-btn mouse-hover" @click="changeCollapse">
+            <i class="el-icon-s-fold" style="color:white"></i>
+          </div>
+        </el-header>
+        <el-main>
+          <div class="el-main_box">
+            <tabs :tabName="tabName" ref="tabs"></tabs>
+
+            <!-- <router-view></router-view> -->
+          </div>
+        </el-main>
         <el-footer>Footer</el-footer>
       </el-container>
     </el-container>
@@ -45,12 +59,19 @@
 <script>
 import { getMenu } from "@/api/accountApi";
 
+import Tabs from "../compo/tabs.vue";
+
 export default {
+  components: {
+    Tabs
+  },
   name: "home",
   data() {
     return {
+      isCollapse: false,
       // 数据属性在这里定义
-      menus: []
+      menus: [],
+      tabName:"",
     };
   },
   created() {
@@ -65,15 +86,31 @@ export default {
   methods: {
     getMenus() {
       getMenu().then(res => {
-        console.log(res);
-        this.menus = res.data;
+        this.menus = res.data[0].children;
+
       });
+    },
+    changeCollapse() {
+      this.isCollapse = !this.isCollapse;
+    },
+    changeMenu(index,indexPath){
+       this.tabName=indexPath
+       this.$refs.tabs.addNewTab(indexPath[0]);
     }
   }
 };
 </script>
 
 <style scoped>
+.el-menu--collapse {
+  /* transition: width 2.5s; */
+  /* width: 100% !important; */
+}
+.aside {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+}
 /* 组件样式在这里定义 */
 .el-header,
 .el-footer {
@@ -112,7 +149,64 @@ body > .el-container {
 }
 
 .logo {
-  height: 56px;
-  background: red;
+  height: 60px;
+  background: rgb(11 64 111);
+  line-height: 60px;
+  box-shadow: 0px 5px 25px 0px rgb(150, 148, 148);
+  color: white;
+  min-width: 64px;
+}
+
+.collapse-btn {
+  width: 40px;
+}
+
+.mouse-hover {
+  cursor: pointer;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 100%;
+}
+
+.el-header {
+  background-color: #5f6974;
+  color: #333;
+  text-align: center;
+  height: calc(10vh);
+}
+
+.el-header {
+  padding: 0px;
+  /* box-shadow: 0px 5px 25px 0px rgb(150, 148, 148); */
+  background: #367fa9d7 !important;
+}
+
+.el-aside {
+  background-color: #ffffff;
+  color: #333;
+  text-align: center;
+  min-height: calc(100vh - 60px);
+  width: 200px !important;
+  box-shadow: 0px 5px 25px 0px rgb(124, 123, 123);
+}
+
+.el-main {
+  color: #333;
+  text-align: center;
+  width: 90% !important;
+  padding: 10px !important;
+  padding: 10px;
+}
+
+.el-main_box {
+  background: white;
+  height: 100%;
+}
+
+.el-menu-vertical-demo {
+  text-align: left;
+  min-height: 100%;
 }
 </style>

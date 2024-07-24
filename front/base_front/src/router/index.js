@@ -4,13 +4,17 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/components/common/login'
 import register from '@/components/common/register'
 import home from '@/components/common/home'
+import getUser from '@/components/getUser'
+import addUser from '@/components/addUser'
+import permissionManage from '@/components/permissionManage'
+
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/HelloWorld',  
+      path: '/HelloWorld',
       name: 'HelloWorld',
       component: HelloWorld
     },
@@ -26,8 +30,27 @@ export default new Router({
     },
     {
       path: '/home',
-      name: 'home',
-      component: home
-    }
+      name: '/home',
+      component: home,
+      redirect: '/getUser',
+      children: [
+        {
+          path: '/getUser',
+          name: 'getUser',
+          component: getUser
+        },
+        {
+          path: '/addUser',
+          name: '/addUser',
+          component: addUser,
+        },
+        {
+          path: '/permissionManage',
+          name: 'permissionManage',
+          component: permissionManage
+        },
+      ]
+    },
+
   ]
 })

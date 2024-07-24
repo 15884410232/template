@@ -62,10 +62,12 @@
         user t05
         where
         t01.id = t02.permission_id and t02.role_id = t03.id and t03.id = t04.role_id and t04.user_id = t05.id
-        and t05.id = #{userId,jdbcType=BIGINT}
-          <if test="roleId != null">
-            and t03.id = #{roleId,jdbcType=BIGINT}
-          </if>
+        <if test="userId != null">
+            and t05.id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="roleId != null">
+        and t03.id = #{roleId,jdbcType=BIGINT}
+        </if>
         and t01.type = 'menu' and t01.source_plat = 'back'
     </select>
 </mapper>

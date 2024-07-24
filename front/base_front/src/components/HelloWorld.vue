@@ -28,16 +28,25 @@
       <el-menu-item index="2-2">选项2</el-menu-item>
   </el-submenu>
 </el-menu>
+
+
+<tabs :name="tabName"></tabs>
   </div>
 </template>
 
 <script>
+
+import Tabs from "./compo/tabs.vue";
 import {getUserList} from '@/api/loginApi'
 export default {
+  components: {
+    Tabs
+  },
   name: 'HelloWorld',
   data() {
     return {
-      isCollapse: true
+      isCollapse: true,
+      tabName:"main1"
       // 数据属性在这里定义
     };
   },
@@ -58,13 +67,13 @@ export default {
         console.log(key, keyPath);
       },
     test(){
-      let user={
-        username:'admin'
-      }
+      // let user={
+      //   username:'admin'
+      // }
       
-      getUserList(user).then(res=>{
-        console.log(res)
-      })
+      // getUserList(user).then(res=>{
+      //   console.log(res)
+      // })
     }
   }
 };

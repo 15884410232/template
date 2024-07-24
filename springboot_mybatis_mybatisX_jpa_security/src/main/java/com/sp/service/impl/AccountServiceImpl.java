@@ -29,6 +29,7 @@ public class AccountServiceImpl  implements AccountService {
             PermissionVo permissionVo = new PermissionVo();
             // 复制
             BeanUtil.copyProperties(permission,permissionVo);
+            permissionVo.setChildren(new ArrayList<>());
             menus.add(permissionVo);
         }
         return TreeUtil.buildTree(menus,-1L);

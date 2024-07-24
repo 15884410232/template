@@ -189,10 +189,11 @@ public class AppInitServiceImpl implements AppInitService {
             addUser.setName("新增用户");
             addUser.setSourcePlat(SourcePlatEnum.back.getCode());
             addUser.setType(PermissionType.menu.getCode());
-            addUser.setUrl("/");
-            addUser.setParentId(userManager.getId());
+            addUser.setUrl("/addUser");
+            addUser.setParentId(back.getId());
             addUser.setCreateBy(0L);
             addUser.setUpdateBy(0L);
+            addUser.setIcon("el-icon-user-solid");
             permissionMapper.insert(addUser);
         }
 
@@ -205,5 +206,66 @@ public class AppInitServiceImpl implements AppInitService {
             addUserRolePermission.setUpdateBy(0L);
             rolePermissionMapper.insert(addUserRolePermission);
         }
+
+        //初始化后台台系统根节点
+        Permission getUser = permissionMapper.findOneByCode("getUser");
+        if (getUser == null) {
+            getUser = new Permission();
+            getUser.setCode("getUser");
+            getUser.setName("查询用户");
+            getUser.setSourcePlat(SourcePlatEnum.back.getCode());
+            getUser.setType(PermissionType.menu.getCode());
+            getUser.setUrl("/getUser");
+            getUser.setParentId(userManager.getId());
+            getUser.setCreateBy(0L);
+            getUser.setUpdateBy(0L);
+            getUser.setIcon("el-icon-user-solid");
+            permissionMapper.insert(getUser);
+        }
+
+        RolePermission getUserRolePermission = rolePermissionMapper.findOneByRoleIdAndPermissionId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId(), getUser.getId());
+        if (getUserRolePermission == null) {
+            getUserRolePermission = new RolePermission();
+            getUserRolePermission.setRoleId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId());
+            getUserRolePermission.setPermissionId(getUser.getId());
+            getUserRolePermission.setCreateBy(0L);
+            getUserRolePermission.setUpdateBy(0L);
+            rolePermissionMapper.insert(getUserRolePermission);
+        }
+
+
+
+        //初始化后台-权限管理
+        Permission permissionManage = permissionMapper.findOneByCode("permissionManage");
+        if (permissionManage == null) {
+            permissionManage = new Permission();
+            permissionManage.setCode("permissionManage");
+            permissionManage.setName("权限管理");
+            permissionManage.setSourcePlat(SourcePlatEnum.back.getCode());
+            permissionManage.setType(PermissionType.menu.getCode());
+            permissionManage.setIcon("el-icon-s-order");
+            permissionManage.setUrl("/permissionManage");
+            permissionManage.setParentId(back.getId());
+            permissionManage.setCreateBy(0L);
+            permissionManage.setUpdateBy(0L);
+            permissionMapper.insert(permissionManage);
+        }
+
+        RolePermission permissionManageRolePermission = rolePermissionMapper.findOneByRoleIdAndPermissionId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId(), permissionManage.getId());
+        if (permissionManageRolePermission == null) {
+            permissionManageRolePermission = new RolePermission();
+            permissionManageRolePermission.setRoleId(roleMapper.findOneByCode(RoleEnum.admin.getCode()).getId());
+            permissionManageRolePermission.setPermissionId(permissionManage.getId());
+            permissionManageRolePermission.setCreateBy(0L);
+            permissionManageRolePermission.setUpdateBy(0L);
+            rolePermissionMapper.insert(permissionManageRolePermission);
+        }
+
+
+
+
+
+
+
     }
 }
