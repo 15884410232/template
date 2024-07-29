@@ -8,4 +8,6 @@ public interface AccountService {
 
     public List<PermissionVo> getMenu(Long userId, Long roleId);
 
+    List<PermissionVo> getPermission();
+
 }

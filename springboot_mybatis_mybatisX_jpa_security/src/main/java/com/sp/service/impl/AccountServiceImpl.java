@@ -1,6 +1,7 @@
 package com.sp.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.sp.common.enums.SourcePlatEnum;
 import com.sp.common.util.tree.TreeUtil;
 import com.sp.mapper.PermissionMapper;
 import com.sp.model.dto.response.PermissionVo;
@@ -34,5 +35,19 @@ public class AccountServiceImpl  implements AccountService {
         }
         return TreeUtil.buildTree(menus,-1L);
 
+    }
+
+    @Override
+    public List<PermissionVo> getPermission() {
+        List<Permission> menu = permissionMapper.getAllBySourcePlat(SourcePlatEnum.back.getCode());
+        List<PermissionVo> menus=new ArrayList<>();
+        for (Permission permission : menu) {
+            PermissionVo permissionVo = new PermissionVo();
+            // 复制
+            BeanUtil.copyProperties(permission,permissionVo);
+            permissionVo.setChildren(new ArrayList<>());
+            menus.add(permissionVo);
+        }
+        return TreeUtil.buildTree(menus,-1L);
     }
 }

@@ -32,7 +32,7 @@ export default new Router({
       path: '/home',
       name: '/home',
       component: home,
-      redirect: '/getUser',
+      redirect: '/addUser',
       children: [
         {
           path: '/getUser',
@@ -46,7 +46,7 @@ export default new Router({
         },
         {
           path: '/permissionManage',
-          name: 'permissionManage',
+          name: '/permissionManage',
           component: permissionManage
         },
       ]

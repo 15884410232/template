@@ -70,4 +70,11 @@
         </if>
         and t01.type = 'menu' and t01.source_plat = 'back'
     </select>
+    <select id="getAllBySourcePlat" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from permission
+        where
+        source_plat = #{sourcePlat,jdbcType=VARCHAR}
+    </select>
 </mapper>

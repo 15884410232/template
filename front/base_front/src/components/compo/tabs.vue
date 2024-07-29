@@ -6,7 +6,7 @@
         :key="index"
         :label="tab.title"
         :name="tab.name"
-        closable
+        :closable="tab.closable"
       >
         <router-view v-if="tab.name === activeName"></router-view>
       </el-tab-pane>
@@ -16,13 +16,16 @@
 
 <script>
 export default {
-  props: {
-    tabName: ""
-  },
   data() {
     return {
       activeName: "", // 默认激活的标签页名称
       tabs: [
+        {
+        title: "首页",
+        name: "/addUser",
+        path: "/addUser",
+        closable:false
+      }
         // ... 其他标签页
       ]
     };
@@ -37,29 +40,30 @@ export default {
       }
     });
     },
-    addNewTab(tabNames) {
+    addNewTab(index,tabName) {
+      console.log(index)
+      console.log(tabName)
       for (let item of this.tabs) {
         if (item != undefined) {
-          if (item.name == tabNames) {
-            this.activeName = tabNames;
+          if (item.name == index) {
+            this.activeName = index;
             return;
           }
         }
       }
-
-
       // 假设我们有一个新的窗口（或标签页）的路由信息
       const newTab = {
-        title: "新窗口" + tabNames,
-        name: tabNames,
-        path: "/" + tabNames
+        title: tabName,
+        name: index,
+        path: "/" + index,
+        closable:true
       };
       // 添加到标签页列表中
       this.tabs.push(newTab);
       // 激活并导航到新的标签页
       this.activeName = newTab.name;
       // console.log(this.$router)
-      this.$router.push("/"+this.tabName).catch(err => {
+      this.$router.push("/"+index).catch(err => {
       if (err.name !== 'NavigationDuplicated') {
         // 如果错误不是NavigationDuplicated，则抛出错误
         throw err;
@@ -82,9 +86,9 @@ export default {
             this.activeName = this.tabs[tabIndex - 1].name;
           } else {
             // 如果没有其他标签页，可以设置一个默认标签页或进行其他操作
-            this.activeName = "first";
+            this.activeName = "/home";
           }
-          this.$router.push("/" + this.activeName).catch(err => {
+          this.$router.push( this.activeName).catch(err => {
       if (err.name !== 'NavigationDuplicated') {
         // 如果错误不是NavigationDuplicated，则抛出错误
         throw err;

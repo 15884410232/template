@@ -21,6 +21,8 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 
     List<Permission> getMenu(@Param("userId") Long userId,@Param("roleId") Long roleId);
 
+    List<Permission> getAllBySourcePlat(@Param("sourcePlat") String sourcePlat);
+
 }
 
 

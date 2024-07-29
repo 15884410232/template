@@ -45,7 +45,7 @@
         </el-header>
         <el-main>
           <div class="el-main_box">
-            <tabs :tabName="tabName" ref="tabs"></tabs>
+            <tabs ref="tabs"></tabs>
 
             <!-- <router-view></router-view> -->
           </div>
@@ -94,9 +94,23 @@ export default {
       this.isCollapse = !this.isCollapse;
     },
     changeMenu(index,indexPath){
-       this.tabName=indexPath
-       this.$refs.tabs.addNewTab(indexPath[0]);
+
+      this.getName(index,this.menus);
+      //  this.tabName=indexPath
+       this.$refs.tabs.addNewTab(index,this.tabName);
+    },
+    getName(index,menus) {
+      for(let item of menus){
+        if(item.url==index){
+          this.tabName=item.name
+          break;
+        }else if(item.children){
+          this.getName(index,item.children);
+        }
+      }
     }
+
+    
   }
 };
 </script>
@@ -171,7 +185,7 @@ body > .el-container {
 }
 
 .el-header {
-  background-color: #5f6974;
+  background-color: #3b6984;
   color: #333;
   text-align: center;
   height: calc(10vh);
@@ -180,7 +194,7 @@ body > .el-container {
 .el-header {
   padding: 0px;
   /* box-shadow: 0px 5px 25px 0px rgb(150, 148, 148); */
-  background: #367fa9d7 !important;
+  background: #1f597ad7 !important;
 }
 
 .el-aside {
@@ -195,9 +209,9 @@ body > .el-container {
 .el-main {
   color: #333;
   text-align: center;
-  width: 90% !important;
   padding: 10px !important;
   padding: 10px;
+  height: calc(100vh - 120px);
 }
 
 .el-main_box {
