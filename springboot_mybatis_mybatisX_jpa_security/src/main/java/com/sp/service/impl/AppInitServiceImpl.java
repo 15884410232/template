@@ -1,6 +1,6 @@
 package com.sp.service.impl;
 
-import com.sp.common.enums.PermissionType;
+import com.sp.common.enums.PermissionTypeEnum;
 import com.sp.common.enums.RoleEnum;
 import com.sp.common.enums.SourcePlatEnum;
 import com.sp.common.util.PasswordEncoderUtil;
@@ -83,19 +83,28 @@ public class AppInitServiceImpl implements AppInitService {
             UserRole.setRoleId(admin.getId());
             userRoleMapper.insert(UserRole);
 
-        }
-        //初始化普通角色
-        if (roleMapper.findOneByCode(RoleEnum.normal.getCode()) == null) {
-            Role normal = new Role();
-            normal.setCode(RoleEnum.normal.getCode());
-            normal.setName(RoleEnum.normal.getName());
-            normal.setCreateBy(0L);
-            normal.setUpdateBy(0L);
-            roleMapper.insert(normal);
-            if (log.isInfoEnabled()) {
-                log.info("初始化普通" + RoleEnum.normal.getName() + "角色");
+            //初始化普通角色
+            if (roleMapper.findOneByCode(RoleEnum.normal.getCode()) == null) {
+                Role normal = new Role();
+                normal.setCode(RoleEnum.normal.getCode());
+                normal.setName(RoleEnum.normal.getName());
+                normal.setCreateBy(0L);
+                normal.setUpdateBy(0L);
+                roleMapper.insert(normal);
+                if (log.isInfoEnabled()) {
+                    log.info("初始化普通" + RoleEnum.normal.getName() + "角色");
+                }
+
+
+                UserRole sysUserRole2=new UserRole();
+                sysUserRole2.setUserId(adminUser.getId());
+                sysUserRole2.setRoleId(normal.getId());
+                userRoleMapper.insert(sysUserRole2);
+
             }
+
         }
+
     }
 
     /**
@@ -111,7 +120,7 @@ public class AppInitServiceImpl implements AppInitService {
             front.setCode(SourcePlatEnum.front.getCode());
             front.setName(SourcePlatEnum.front.getName());
             front.setSourcePlat(SourcePlatEnum.front.getCode());
-            front.setType(PermissionType.menu.getCode());
+            front.setType(PermissionTypeEnum.menu.getCode());
             front.setUrl("/");
             front.setParentId(-1L);
             front.setCreateBy(0L);
@@ -126,7 +135,7 @@ public class AppInitServiceImpl implements AppInitService {
             back.setCode(SourcePlatEnum.back.getCode());
             back.setName(SourcePlatEnum.back.getName());
             back.setSourcePlat(SourcePlatEnum.back.getCode());
-            back.setType(PermissionType.menu.getCode());
+            back.setType(PermissionTypeEnum.menu.getCode());
             back.setUrl("/");
             back.setParentId(-1L);
             back.setCreateBy(0L);
@@ -163,7 +172,7 @@ public class AppInitServiceImpl implements AppInitService {
             userManager.setCode("userManager");
             userManager.setName("用户管理");
             userManager.setSourcePlat(SourcePlatEnum.back.getCode());
-            userManager.setType(PermissionType.menu.getCode());
+            userManager.setType(PermissionTypeEnum.menu.getCode());
             userManager.setUrl("/");
             userManager.setParentId(back.getId());
             userManager.setCreateBy(0L);
@@ -188,7 +197,7 @@ public class AppInitServiceImpl implements AppInitService {
             addUser.setCode("addUser");
             addUser.setName("新增用户");
             addUser.setSourcePlat(SourcePlatEnum.back.getCode());
-            addUser.setType(PermissionType.menu.getCode());
+            addUser.setType(PermissionTypeEnum.menu.getCode());
             addUser.setUrl("/addUser");
             addUser.setParentId(back.getId());
             addUser.setCreateBy(0L);
@@ -214,7 +223,7 @@ public class AppInitServiceImpl implements AppInitService {
             getUser.setCode("getUser");
             getUser.setName("查询用户");
             getUser.setSourcePlat(SourcePlatEnum.back.getCode());
-            getUser.setType(PermissionType.menu.getCode());
+            getUser.setType(PermissionTypeEnum.menu.getCode());
             getUser.setUrl("/getUser");
             getUser.setParentId(userManager.getId());
             getUser.setCreateBy(0L);
@@ -242,7 +251,7 @@ public class AppInitServiceImpl implements AppInitService {
             permissionManage.setCode("permissionManage");
             permissionManage.setName("权限管理");
             permissionManage.setSourcePlat(SourcePlatEnum.back.getCode());
-            permissionManage.setType(PermissionType.menu.getCode());
+            permissionManage.setType(PermissionTypeEnum.menu.getCode());
             permissionManage.setIcon("el-icon-s-order");
             permissionManage.setUrl("/permissionManage");
             permissionManage.setParentId(back.getId());

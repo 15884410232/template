@@ -1,7 +1,10 @@
 const state={
     token:'',
     userInfo:{},
-    userId:''
+    userId:'',
+    permissions:[],
+    roles:[],
+    currentRole:''
 }
 /**
  * 同步操作： Mutations 必须是同步函数，用于直接修改 Vuex 的 state。
@@ -17,6 +20,15 @@ const mutations={
     },
     setUserId(state,userId){
         state.userId=userId
+    },
+    setPermissions(state,permissions){
+        state.permissions=permissions
+    },
+    setRoles(state,roles){
+        state.roles=roles
+    },
+    setCurrentRole(state,currentRole){
+        state.currentRole=currentRole
     }
 }
 /**

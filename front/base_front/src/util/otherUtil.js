@@ -310,6 +310,7 @@ class CommonFunc {
         return uuidv4();
     }
     signature (config) {
+        console.log(config)
         let signature = '';
         let signToStr = '';
         try {
@@ -327,6 +328,7 @@ class CommonFunc {
             // console.log('url:', url);
             param = config.url.split('?')[1];
             param = !!param ? param : '';
+            console.log('param:', param);
             if (config.method.toLowerCase() != 'get') {
                 console.log("config")
                 console.log(config.data)

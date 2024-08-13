@@ -6,9 +6,25 @@ import request from "../util/request";
  * @param {*} data 
  * @returns 
  */
-export function getMenu() {
+export function getMenu(data) {
   return request({
     url: "/account/getMenu",
     method: "post",
+    data
+  });
+}
+
+export function getPermission() {
+  return request({
+    url: "/account/getPermission",
+    method: "post",
+  });
+}
+
+export function addPermission(data) {
+  return request({
+    url: "/account/permission/add",
+    method: "post",
+    data:data
   });
 }

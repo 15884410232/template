@@ -1,6 +1,8 @@
 package com.sp.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.sp.common.enums.PermissionTypeEnum;
+import com.sp.common.enums.RoleEnum;
 import com.sp.common.enums.SourcePlatEnum;
 import com.sp.common.util.tree.TreeUtil;
 import com.sp.mapper.PermissionMapper;
@@ -22,9 +24,13 @@ public class AccountServiceImpl  implements AccountService {
     private PermissionMapper permissionMapper;
 
     @Override
-    public List<PermissionVo> getMenu(Long userId,Long roleId) {
-
-        List<Permission> menu = permissionMapper.getMenu(userId, roleId);
+    public List<PermissionVo> getMenu(Long userId,String roleName) {
+        List<Permission> menu;
+        if(RoleEnum.admin.getCode().equals(roleName)){
+            menu = permissionMapper.getAllBySourcePlatAndType(SourcePlatEnum.back.getCode(), PermissionTypeEnum.menu.getCode());
+        }else {
+            menu = permissionMapper.getMenu(userId, roleName);
+        }
         List<PermissionVo> menus=new ArrayList<>();
         for (Permission permission : menu) {
             PermissionVo permissionVo = new PermissionVo();

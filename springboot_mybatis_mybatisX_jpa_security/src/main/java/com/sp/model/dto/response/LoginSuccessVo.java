@@ -11,4 +11,6 @@ public class LoginSuccessVo {
 
     private List<String> permissions;
 
+    private List<String> roles;
+
 }

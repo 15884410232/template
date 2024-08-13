@@ -85,7 +85,11 @@ export default {
   },
   methods: {
     getMenus() {
-      getMenu().then(res => {
+
+      let data={
+        name:this.$store.getters.currentRole
+      }
+      getMenu(data).then(res => {
         this.menus = res.data[0].children;
 
       });

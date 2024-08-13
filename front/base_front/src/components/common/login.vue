@@ -60,10 +60,10 @@
         <div class="role_list">
           <div
             class="select_role_btn"
-            v-for="item in this.$store.state.roles"
+            v-for="item in this.$store.getters.roles"
             :key="item.id"
-            @click="findMenuByRoleId(item)"
-          >{{item.roleName}}</div>
+            @click="checkRole(item)"
+          >{{item}}</div>
         </div>
       </div>
     </el-dialog>
@@ -108,30 +108,22 @@ export default {
   },
 
   mounted: function() {
-    this.refreshCode()
+    this.refreshCode();
   },
   methods: {
     ...mapMutations([
-      "setToken"
+      "setToken",
+      "setPermissions",
+      "setRoles",
+      "setCurrentRole"
     ]),
-    findMenuByRoleId(checkRole) {
-      this.$http({
-        method: "post",
-        url: this.$url + "/sys/menu/back/get", //这里是发送给后台的数据
-        params: {
-          roleId: checkRole.id
-        }
-      }).then(response => {
-        var res = response.data;
-        this.setCurrentRole(checkRole);
-        this.setMenus(res.data.menus);
-        this.setPermissions(res.data.btns);
-        sessionStorage.setItem("store", JSON.stringify(this.$store.state));
-        this.$router.push(res.data.menus[0].children[0].url);
-      });
+    checkRole(checkRole) {
+      this.setCurrentRole(checkRole);
+
+      this.$router.push("/home");
     },
 
-   async refreshCode() {
+    async refreshCode() {
       captcha()
         .then(res => {
           this.userDto.captchaId = res.data.captchaId;
@@ -147,14 +139,21 @@ export default {
         if (valid) {
           doLogin(this.userDto)
             .then(res => {
-              if(res.code==200){
+              if (res.code == 200) {
                 this.setToken(res.data.token);
-                this.$router.push("/home")
-              }else{
+                this.setPermissions(res.data.permissions);
+                if (res.data.roles.length == 1) {
+                  this.setCurrentRole(res.data.roles[0]);
+
+                  this.$router.push("/home");
+                } else {
+                  this.setRoles(res.data.roles);
+                  this.selectRoleBoxShow = true;
+                }
+              } else {
                 this.$message.error(res.message);
               }
-              console.log(res)
-
+              console.log(res);
             })
             .catch(() => {})
             .finally(() => {});

@@ -5,6 +5,7 @@ import com.sp.common.util.SecurityContextUtil;
 import com.sp.model.dto.req.LoginDto;
 import com.sp.model.dto.response.base.Result;
 import com.sp.model.entity.Permission;
+import com.sp.model.entity.Role;
 import com.sp.model.entity.User;
 import com.sp.service.AccountService;
 import com.sp.service.LoginService;
@@ -43,9 +44,11 @@ public class AccountController {
 //    }
 
     @RequestMapping("getMenu")
-    public Result getMenu(){
+    public Result getMenu(@RequestBody Role role){
         User currentUser = SecurityContextUtil.getCurrentUser();
-        return ResultUtil.success(accountService.getMenu(currentUser.getId(),null));
+        log.info("getMenu:{}",role);
+
+        return ResultUtil.success(accountService.getMenu(currentUser.getId(),role.getName()));
     }
 
 
@@ -56,7 +59,7 @@ public class AccountController {
     }
 
     @RequestMapping("permission/add")
-    public Result addPermission(Permission permission){
+    public Result addPermission(@RequestBody Permission permission){
         return ResultUtil.success(permissionService.save(permission));
     }
 

@@ -106,6 +106,7 @@ public class LoginServiceImpl implements LoginService {
         LoginSuccessVo loginSuccessVo=new LoginSuccessVo();
         loginSuccessVo.setToken(token);
         loginSuccessVo.setPermissions(permissions);
+        loginSuccessVo.setRoles(roles);
         return ResultUtil.success(loginSuccessVo);
     }
 }

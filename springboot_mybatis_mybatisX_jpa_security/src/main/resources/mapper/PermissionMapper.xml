@@ -65,8 +65,8 @@
         <if test="userId != null">
             and t05.id = #{userId,jdbcType=BIGINT}
         </if>
-        <if test="roleId != null">
-        and t03.id = #{roleId,jdbcType=BIGINT}
+        <if test="roleName != null">
+        and t03.code = #{roleName,jdbcType=VARCHAR}
         </if>
         and t01.type = 'menu' and t01.source_plat = 'back'
     </select>
@@ -76,5 +76,13 @@
         from permission
         where
         source_plat = #{sourcePlat,jdbcType=VARCHAR}
+    </select>
+    <select id="getAllBySourcePlatAndType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from permission
+        where
+        source_plat = #{sourcePlat,jdbcType=VARCHAR}
+        AND type = #{type,jdbcType=VARCHAR}
     </select>
 </mapper>

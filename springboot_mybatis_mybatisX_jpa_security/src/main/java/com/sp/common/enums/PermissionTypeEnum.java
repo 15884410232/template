@@ -5,7 +5,7 @@ package com.sp.common.enums;
  * @author chenqi
  * @date 2022/3/27
  */
-public enum PermissionType {
+public enum PermissionTypeEnum {
 
     /**
      * 菜单
@@ -32,7 +32,7 @@ public enum PermissionType {
      */
     private String name;
 
-    PermissionType(String code, String name){
+    PermissionTypeEnum(String code, String name){
         this.code=code;
         this.name=name;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AccountService {
 
-    public List<PermissionVo> getMenu(Long userId, Long roleId);
+    public List<PermissionVo> getMenu(Long userId, String roleName);
 
     List<PermissionVo> getPermission();
 
